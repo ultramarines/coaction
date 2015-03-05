@@ -60,10 +60,30 @@ For hard mode, you can choose one or more of the following:
 * Tasks can have attachments (images, files)
 * Updates to tasks are reflected in real time (e.g. When user 1 comments on a task that user 2 is viewing, user 2 immediately sees user 1's comment.)
 * Send updates to subscribed tasks through email.
-  * Everyone who touches a task -- creates the task, is assigned to the task, reassigns the task -- is subscribed to it and receives updates about it. 
-  * You should have a dashboard where you can see all tasks you're subscribed to. 
-  * When you comment on a task, you can choose to be subscribed to it if you're not already. 
+  * Everyone who touches a task -- creates the task, is assigned to the task, reassigns the task -- is subscribed to it and receives updates about it.
+  * You should have a dashboard where you can see all tasks you're subscribed to.
+  * When you comment on a task, you can choose to be subscribed to it if you're not already.
   * You can unsubscribe from a task if you aren't the original assigner or the current assignee.
+
+---
+
+## Front Enders
+
+You need to run `npm install`
+
+From that point on, you can just run `gulp` to run in development mode.
+
+Run `gulp release` to build a minified, bundled, optimized version of your code.
+
+The `dist` folder is now `coaction/static`.
+
+All of your URLs (including Angular template URLs) should begin with static.
+(e.g. 'static/my-directive/my-directive.html')
+
+Live-reload is working, but is a wee smidge different. You'll need this Chrome
+extension installed:
+
+https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei?hl=en
 
 ---
 
