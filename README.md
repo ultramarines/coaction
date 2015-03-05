@@ -56,6 +56,9 @@ For hard mode, you can choose one or more of the following:
 * Add the ability to add a list of todos to a task
   * Users can edit/remove todos
   * Users can check off a todo in order to mark it as completed
+* Users can see a chart of the amount of todos they have completed over time
+  * They can also see other stats, like the amount they've created, and the amount "in-flight" (started but not completed)
+  * These stats should be available for the entire organization
 * Tasks can be assigned to people that don't yet have an account by using their email address. That new person who does not yet have an account will get an email with a link to let them create an account.
 * Tasks can have attachments (images, files). Because you're going to deploy to Heroku, these should be stored in S3.
 
@@ -113,3 +116,4 @@ Once you have your application ready -- or long before -- it should be deployed 
 * If you're going to try to upload files to S3:
   * Try [Flask-Store](http://flask-store.soon.build/en/latest/)
   * If that doesn't work, check out https://github.com/doobeh/Flask-S3-Uploader and https://devcenter.heroku.com/articles/s3-upload-python
+* [Vega](https://trifacta.github.io/vega/). A simplified interface on top of D3 for charting. [NVD3](http://nvd3.org/) is another option.
