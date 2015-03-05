@@ -35,8 +35,8 @@
 }
 
 .main-nav-link:hover {
-  background: $alt-accent-color;
-  color: inherit;
+  background: $alt-accent-bg;
+  color: $alt-accent-fg;
 }
 
 .main-nav-link.active {

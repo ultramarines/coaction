@@ -1,8 +1,8 @@
 body {
   font-family: sans-serif;
   line-height: 1.4em;
-  background: #FFF;
-  color: #444;
+  background: $bg-color;
+  color: $fg-color;
 }
 
 h1 { font-size: 2em; margin: .67em 0 }
@@ -28,7 +28,7 @@ a {
 }
 
 a:hover {
-  color: $alt-accent-color;
+  color: $alt-accent-bg;
 }
 
 td {
@@ -37,7 +37,7 @@ td {
 
 input, textarea {
   font-size: 1em;
-  border: 1px solid #DDD;
+  border: 1px solid $input-border-color;
   padding: 0.25em;
 }
 
@@ -45,7 +45,7 @@ button {
   display: inline-block;
   padding: 0.25em 0.75em;
   border: 0;
-  background: #AAA;
-  color: #FFF;
+  background: $alt-accent-bg;
+  color: $alt-accent-fg;
   font-size: 1em;
 }
