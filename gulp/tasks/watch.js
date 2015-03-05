@@ -4,6 +4,7 @@
 var gulp = require('gulp'),
     watch = require('../util/watch'),
     config = require('../config'),
+    livereload = require('gulp-livereload'),
     gulpStart = require('../util/gulpstart');
 
 gulp.task('watch', function () {
@@ -31,4 +32,6 @@ gulp.task('watch', function () {
       then: gulpStart('html')
     }]
   });
+
+  livereload.listen();
 });
