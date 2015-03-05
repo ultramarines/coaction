@@ -112,7 +112,8 @@ Once you have your application ready -- or long before -- it should be deployed 
 ## Resources
 
 * [JSend](http://labs.omniti.com/labs/jsend). You need to decide what the JSON you send back and forth will look like. This is an incredibly simple format that will serve you well.
-* [Marshmellow](https://marshmallow.readthedocs.org/en/latest/). This library can convert your database models to JSON, JSON back into models, and also validate your data! Slim down your application: eat a marshmellow! Make sure to [look at their SQLAlchemy example](https://marshmallow.readthedocs.org/en/latest/examples.html#quotes-api-flask-sqlalchemy)* [pytest-flask](https://pypi.python.org/pypi/pytest-flask). You should test your API endpoints! It's a lot easier than it used to be with pytest-flask. I've already done the hard part for you.
+* [Marshmellow](https://marshmallow.readthedocs.org/en/latest/). This library can convert your database models to JSON, JSON back into models, and also validate your data! Slim down your application: eat a marshmellow! Make sure to [look at their SQLAlchemy example](https://marshmallow.readthedocs.org/en/latest/examples.html#quotes-api-flask-sqlalchemy).
+* [pytest-flask](https://pypi.python.org/pypi/pytest-flask). You should test your API endpoints! It's a lot easier than it used to be with pytest-flask. I've already done the hard part for you.
 * If you're going to try to upload files to S3:
   * Try [Flask-Store](http://flask-store.soon.build/en/latest/)
   * If that doesn't work, check out https://github.com/doobeh/Flask-S3-Uploader and https://devcenter.heroku.com/articles/s3-upload-python
