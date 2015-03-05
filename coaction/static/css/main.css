@@ -28,8 +28,8 @@ table {
 
 @font-face {
   font-family: "fontastic";
-  src: url("../fonts/fontastic.eot");
-  src: url("../fonts/fontastic.eot?#iefix") format("embedded-opentype"), url("../fonts/fontastic.woff") format("woff"), url("../fonts/fontastic.ttf") format("truetype"), url("../fonts/fontastic.svg#fontastic") format("svg");
+  src: url("static/fonts/fontastic.eot");
+  src: url("static/fonts/fontastic.eot?#iefix") format("embedded-opentype"), url("static/fonts/fontastic.woff") format("woff"), url("static/fonts/fontastic.ttf") format("truetype"), url("static/fonts/fontastic.svg#fontastic") format("svg");
   font-weight: normal;
   font-style: normal; }
 
@@ -39,7 +39,7 @@ table {
 body {
   font-family: sans-serif;
   line-height: 1.4em;
-  background: #FFF;
+  background: white;
   color: #444; }
 
 h1 {
@@ -90,8 +90,8 @@ button {
   display: inline-block;
   padding: 0.25em 0.75em;
   border: 0;
-  background: #AAA;
-  color: #FFF;
+  background: #54CC14;
+  color: white;
   font-size: 1em; }
 
 .root-content {
@@ -127,7 +127,7 @@ button {
 
 .main-nav-link:hover {
   background: #54CC14;
-  color: inherit; }
+  color: white; }
 
 .main-nav-link.active {
   background: #4d5196; }
