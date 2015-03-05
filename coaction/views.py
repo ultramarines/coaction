@@ -1,23 +1,12 @@
-"""Add your views here.
-
-We have started you with an initial blueprint. Add more as needed.
-"""
-
 from flask import Blueprint, flash
 
 
-coaction = Blueprint("coaction", __name__)
+coaction = Blueprint("coaction", __name__, static_folder="./static")
 
 
 @coaction.route("/")
 def index():
-    return "Hello, world!"
+    return coaction.send_static_file("index.html")
 
 
-def flash_errors(form, category="warning"):
-    '''Flash all errors for a form.'''
-    for field, errors in form.errors.items():
-        for error in errors:
-            flash("{0} - {1}"
-                    .format(getattr(form, field).label.text, error), category)
-
+## Add your API views here
