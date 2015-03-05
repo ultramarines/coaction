@@ -57,17 +57,13 @@ For hard mode, you can choose one or more of the following:
   * Users can edit/remove todos
   * Users can check off a todo in order to mark it as completed
 * Tasks can be assigned to people that don't yet have an account by using their email address. That new person who does not yet have an account will get an email with a link to let them create an account.
-* Tasks can have attachments (images, files)
-* Updates to tasks are reflected in real time (e.g. When user 1 comments on a task that user 2 is viewing, user 2 immediately sees user 1's comment.)
-* Send updates to subscribed tasks through email.
-  * Everyone who touches a task -- creates the task, is assigned to the task, reassigns the task -- is subscribed to it and receives updates about it.
-  * You should have a dashboard where you can see all tasks you're subscribed to.
-  * When you comment on a task, you can choose to be subscribed to it if you're not already.
-  * You can unsubscribe from a task if you aren't the original assigner or the current assignee.
+* Tasks can have attachments (images, files). Because you're going to deploy to Heroku, these should be stored in S3.
 
 ---
 
-## Front Enders
+## Setup for front-end students
+
+### Front end code
 
 You need to run `npm install`
 
@@ -85,58 +81,35 @@ extension installed:
 
 https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei?hl=en
 
+### Python
+
+In order to see your HTML, CSS, and JavaScript, you will need to run Python. The version we use is not the same as the one on your system, so you'll have to install it. Here's what you do:
+
+1. Run `brew install python3`.
+2. In the `coaction` folder, run `pip3 install -r requirements.txt`. This installs all the Python packages we need.
+
+That's it!
+
+When you're ready to run the application, from the `coaction` folder run `python3 manage.py server`.
+
+**NOTE**: This is different from how the Python students run this. We've simplified it in your case.
+
+### Databases
+
+You'll need a database for this project. We've set it up so it should be easy. The Python students on your project will be able to help you with this.
+
 ---
 
-Quickstart
-----------
+## Deliverables
 
-Run the following commands to bootstrap your environment.
+Once you have your application ready -- or long before -- it should be deployed to Heroku. Python students, you are in charge of this part!
 
+---
 
-```
-cd coaction
-pip install -r requirements.txt
-python manage.py db init
-python manage.py server
-```
+## Resources
 
-
-Deployment
-----------
-
-In your production environment, make sure you have an application.cfg
-file in your instance directory.
-
-
-Shell
------
-
-To open the interactive shell, run:
-
-    python manage.py shell
-
-By default, you will have access to `app` and `db`.
-
-
-Running Tests
--------------
-
-To run all tests, run:
-
-    python manage.py test
-
-
-Migrations
-----------
-
-Whenever a database migration needs to be made, run the following commmand:
-
-        python manage.py db migrate
-
-This will generate a new migration script. Then run:
-
-        python manage.py db upgrade
-
-to apply the migration.
-
-For a full migration command reference, run `python manage.py db --help`.
+* [JSend](http://labs.omniti.com/labs/jsend). You need to decide what the JSON you send back and forth will look like. This is an incredibly simple format that will serve you well.
+* [Marshmellow](https://marshmallow.readthedocs.org/en/latest/). This library can convert your database models to JSON, JSON back into models, and also validate your data! Slim down your application: eat a marshmellow! Make sure to [look at their SQLAlchemy example](https://marshmallow.readthedocs.org/en/latest/examples.html#quotes-api-flask-sqlalchemy)* [pytest-flask](https://pypi.python.org/pypi/pytest-flask). You should test your API endpoints! It's a lot easier than it used to be with pytest-flask. I've already done the hard part for you.
+* If you're going to try to upload files to S3:
+  * Try [Flask-Store](http://flask-store.soon.build/en/latest/)
+  * If that doesn't work, check out https://github.com/doobeh/Flask-S3-Uploader and https://devcenter.heroku.com/articles/s3-upload-python
