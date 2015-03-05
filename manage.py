@@ -25,5 +25,12 @@ def make_shell_context():
     return dict(app=app, db=db)
 
 
+@manager.command
+def createdb():
+    """Creates the database with all model tables. 
+    Migrations are preferred."""
+    db.create_all()
+
+
 if __name__ == '__main__':
     manager.run()
