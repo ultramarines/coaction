@@ -6,16 +6,25 @@ from flask.ext.login import UserMixin
 class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.String(255), nullable=False)
-    user_id = db.Column(db.Integer, nullable = False, default = 0)
+    description = db.Column(db.String(255))
+    status = db.Column(db.String(32), nullable=False, default="New")
+    user_id = db.Column(db.Integer, nullable=False, default=0)
     project_id = db.Column(db.Integer)
-    completed = db.Column(db.Boolean, nullable = False, default = False)
+    date_assigned = db.Column(db.Date, nullable=False)
+    date_due = db.Column(db.Date)
+    index = db.Column(db.Integer)
 
 
     def to_dict(self):
-        return {"id":self.id,
+        return {"id": self.id,
                 "title": self.title,
+                "description": self.description,
+                "status": self.status,
                 "user_id": self.user_id,
-                "completed":self.completed}
+                "project_id": self.project_id,
+                "date_assigned": str(self.date_assigned),
+                "date_due": str(self.date_due)}
+
 
 
 # class User(db.Model, UserMixin):
