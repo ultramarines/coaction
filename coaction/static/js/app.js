@@ -37,7 +37,6 @@ app.config(['$routeProvider', function($routeProvider){
     controllerAs: 'vm',
     resolve: {
       tasks: ['tasksService', function(tasksService) {
-          return [];
           // tasksService.list();
       }]
     }
