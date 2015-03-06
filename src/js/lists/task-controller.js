@@ -5,7 +5,12 @@ app.config(['$routeProvider', function($routeProvider){
     controllerAs: 'vm',
     resolve: {
       tasks: ['tasksService', function(tasksService) {
-          return tasksService.list();
+          return tasksService.list().then(function(result) {
+            return result.tasks;
+          }).catch(function(err) {
+            $log.log(err);
+            alert('tasks failed to load');
+          });
       }]
     }
   };
@@ -19,13 +24,14 @@ app.config(['$routeProvider', function($routeProvider){
   self.newTask = Task();
 
   self.addTask = function() {
-    var createdTask = tasksService.addTask(self.newTask);
-    if (createdTask.id) {
-      self.tasks.push(createdTask);
-    } else {
-      alert('addition unsuccessful');
-    }
-    self.newTask = Task();
+    tasksService.addTask(self.newTask).then(function(result) {
+      var addedTask = result.data;
+      self.tasks.push(addedTask);
+      self.newTask = Task();
+    }).catch(function (err) {
+      $log.log(err);
+      alert('addTask Failed :(');
+    })
   };
 
   self.toggleTask = function(task) {
