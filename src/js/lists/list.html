@@ -10,7 +10,8 @@
           <input type="text" ng-model="vm.newTask.title">
           <button>add</button>
         </form>
-      </li><li ng-repeat="task in vm.tasks | orderBy: 'task.id'">
+      </li>
+      <li ng-repeat="task in vm.tasks | orderBy: 'task.id'">
         <button ng-click="vm.completeTask(task)"
         >done</button> {{ task.title }} <button class="task-delete" ng-click="vm.deleteTask(task)">X</button>
       </li>
