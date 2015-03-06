@@ -5,7 +5,7 @@ app.factory('tasksService', ['ajaxService', '$http', '$log', function(ajaxServic
     addTask: function(task) {
       var addedTask = {};
       ajaxService.call($http.post('/api/tasks', task)).then(function(result) {
-        addedTask = result.data;
+        addedTask = result;
         return addedTask;
       }).catch(function(err) {
         $log.log(err);

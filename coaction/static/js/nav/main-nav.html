@@ -9,7 +9,7 @@
     </form>
   </div>
   <div ng-if="vm.hasUser">
-  <button ng-click="vm.toggleUserMenu()" class="main-nav-link">current.user</button>
+  <button ng-click="vm.toggleUserMenu()" class="main-nav-link">{{vm.currentUser.username}}</button>
     <ul ng-show="vm.showUserMenu">
       <li>myProjects</li>
       <li>myAssignments</li>

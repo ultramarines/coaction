@@ -30,6 +30,16 @@ app.factory('current', ['ajaxService', '$http', '$log', function(ajaxService, $h
   var self = this;
   self.user = {};
 
+  self.login = function(login) {
+    self.user.username = login.username;
+    return true;
+  }
+
+  self.logout = function() {
+    self.user = {}
+    return false;
+  }
+
   return self;
 
   //TODO: make this a thing
@@ -38,6 +48,62 @@ app.factory('current', ['ajaxService', '$http', '$log', function(ajaxService, $h
 app.controller('Error404Ctrl', ['$location', function ($location) {
   this.message = 'Could not find: ' + $location.url();
 }]);
+
+app.factory('Login', function() {
+  return function (spec) {
+    spec = spec || {};
+
+    return {
+      username: spec.username,
+      password: spec.password
+    };
+  };
+});
+
+app.controller('MainNavCtrl',
+  ['ajaxService', '$http', '$location', '$log', 'current', 'Login', function(ajaxService, $http, $location, $log, current, Login) {
+
+    var self = this;
+
+    self.login = Login();
+
+    self.showLoginForm = false;
+
+    self.showUserMenu = false;
+
+    self.hasUser = false;
+
+    self.currentUser = current.user;
+
+    self.userLogin = function(login) {
+      if (login.username && login.password) {
+        self.hasUser = current.login(self.login);
+        self.currentUser = current.user;
+        self.showLoginForm = false;
+        self.login = Login();
+      } else {
+        alert('you need to enter a username and password, dummy');
+      }
+    }
+
+    self.toggleLoginForm = function() {
+      self.showLoginForm = !self.showLoginForm;
+    }
+
+    self.toggleUserMenu = function() {
+      self.showUserMenu = !self.showUserMenu;
+    }
+
+    self.logout = function() {
+      self.hasUser = current.logout();
+      self.currentUser = current.user;
+      self.showUserMenu = false;
+    }
+
+    //TODO: create login dropdown
+    //TODO: create current.user dropdown
+
+  }]);
 
 app.config(['$routeProvider', function($routeProvider){
   var routeDefinition = {
@@ -96,58 +162,6 @@ app.factory('Task', function() {
     };
   };
 });
-
-app.factory('Login', function() {
-  return function (spec) {
-    spec = spec || {};
-
-    return {
-      username: spec.username,
-      password: spec.password
-    };
-  };
-});
-
-app.controller('MainNavCtrl',
-  ['ajaxService', '$http', '$location', '$log', 'current', 'Login', function(ajaxService, $http, $location, $log, current, Login) {
-
-    var self = this;
-
-    self.login = Login();
-
-    self.showLoginForm = false;
-
-    self.showUserMenu = false;
-
-    self.hasUser = false;
-
-    self.userLogin = function(login) {
-      if (login.username && login.password) {
-        self.hasUser = true;
-        self.showLoginForm = false;
-        self.login = Login();
-      } else {
-        alert('you need to enter a username and password, dummy');
-      }
-    }
-
-    self.toggleLoginForm = function() {
-      self.showLoginForm = !self.showLoginForm;
-    }
-
-    self.toggleUserMenu = function() {
-      self.showUserMenu = !self.showUserMenu;
-    }
-
-    self.logout = function() {
-      self.hasUser = false;
-      self.showUserMenu = false;
-    }
-
-    //TODO: create login dropdown
-    //TODO: create current.user dropdown
-
-  }]);
 
 app.factory('tasksService', ['ajaxService', '$http', '$log', function(ajaxService, $http, $log) {
 

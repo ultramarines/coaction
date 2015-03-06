@@ -11,9 +11,12 @@ app.controller('MainNavCtrl',
 
     self.hasUser = false;
 
+    self.currentUser = current.user;
+
     self.userLogin = function(login) {
       if (login.username && login.password) {
-        self.hasUser = true;
+        self.hasUser = current.login(self.login);
+        self.currentUser = current.user;
         self.showLoginForm = false;
         self.login = Login();
       } else {
@@ -30,7 +33,8 @@ app.controller('MainNavCtrl',
     }
 
     self.logout = function() {
-      self.hasUser = false;
+      self.hasUser = current.logout();
+      self.currentUser = current.user;
       self.showUserMenu = false;
     }
 
