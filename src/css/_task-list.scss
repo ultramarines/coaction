@@ -12,16 +12,28 @@
   margin: 0 auto;
   li {
     padding: .2em;
+    vertical-align: middle;
   }
   input {
     border: 0;
-    background-color: $dull;
+    background-color: transparent;
     &:focus {
       outline: none;
     }
   }
 }
 
+.task-complete {
+  border-radius: 50%;
+  padding: 1em;
+  vertical-align: middle;
+  overflow: auto;
+  background-color: #fff;
+  border: 2px solid $accent-color;
+  // -webkit-appearance: none;
+}
 .task-delete {
   float: right;
+  color: $primary-text;
+  background-color: transparent;
 }

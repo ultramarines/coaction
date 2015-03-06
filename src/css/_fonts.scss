@@ -9,3 +9,20 @@
   font-weight: normal;
   font-style: normal;
 }
+
+@font-face {
+  font-family: "Lobster";
+  src:url("static/fonts/Lobster-Regular.eot");
+  font-style: normal;
+  font-weight: 100;
+}
+
+
+
+$primary-font: "Open-Sans";
+
+$secondary-font: "Lobster";
+
+h2 {
+  font-family: $secondary-font;
+}

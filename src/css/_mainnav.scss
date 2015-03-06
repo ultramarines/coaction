@@ -15,3 +15,30 @@
 //   left: 0;
 //   background: seagreen;
 // }
+
+.main-nav-logo {
+  height: 2      em;
+  vertical-align: middle;
+}
+
+.main-nav {
+  background-color: $dull;
+  text-align: center;
+
+}
+
+.main-nav-logo {
+  height: 3em;
+}
+
+.main-nav-link {
+  position: relative;
+  form {
+    position: absolute;
+    bottom: -7em;
+    right: -5em;
+    padding: 1em;
+    background-color: $dull;
+    display: inline-block;
+  }
+}

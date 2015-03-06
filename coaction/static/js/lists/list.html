@@ -1,8 +1,10 @@
 <div class="lists-content">
-  <h2>(CO)SPIRE</h2>
-  <p>
-    Implement your vision. Show other your glory. Go ahead, make a list.
-  </p>
+  <h1 class="page-title">(CO)SPIRE</h1>
+  <!-- <img src="/static/img/cospirelight.svg" alt="COSPIRE" /> -->
+  <h2>
+    "Implement your vision. Show others your glory.<br>
+    Go ahead, make a list."
+  </h2>
   <div class="task-list-wrapper">
     <ul class="task-list">
       <li>
@@ -12,10 +14,9 @@
         </form>
       </li>
       <li ng-repeat="task in vm.tasks | orderBy: 'task.id'">
-        <button ng-click="vm.completeTask(task)"
-        >done</button> {{ task.title }} <button class="task-delete" ng-click="vm.deleteTask(task)">X</button>
+        <input type="checkbox" class="task-complete"></button> {{ task.title }}
+        <button class="task-delete" ng-click="vm.deleteTask(task)">X</button>
       </li>
     </ul>
   </div>
-
 </div>
