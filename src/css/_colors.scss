@@ -1,4 +1,10 @@
-$bg-color: white;
+$dark: #1C1D21;
+$darkbgray: #31353D;
+$burp: #445878;
+$aqua: #92CDCF;
+$dull: #EEEFF7;
+
+$bg-color: $dark;
 $fg-color: #444;
 $input-border-color: #DDD;
 $alt-bg-color: #F4F4F4;
@@ -6,8 +12,8 @@ $alt-bg-color: #F4F4F4;
 $bold-color: #E84E01;
 $alt-bold-color: #4F9EE5;
 
-$accent-color: #6067B0;
+$accent-color: $burp;
 $accent-color-dark: #4d5196;
-$alt-accent-bg: #54CC14;
+$alt-accent-bg: $aqua;
 $alt-accent-fg: white;
 $alt-accent-bg-dark: #44B209;

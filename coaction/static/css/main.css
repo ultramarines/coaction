@@ -39,7 +39,7 @@ table {
 body {
   font-family: sans-serif;
   line-height: 1.4em;
-  background: white;
+  background: #1C1D21;
   color: #444; }
 
 h1 {
@@ -76,7 +76,7 @@ a {
   outline: none; }
 
 a:hover {
-  color: #54CC14; }
+  color: #92CDCF; }
 
 td {
   padding: 0.25em 0.5em; }
@@ -90,7 +90,7 @@ button {
   display: inline-block;
   padding: 0.25em 0.75em;
   border: 0;
-  background: #54CC14;
+  background: #92CDCF;
   color: white;
   font-size: 1em; }
 
@@ -126,8 +126,30 @@ button {
   color: inherit; }
 
 .main-nav-link:hover {
-  background: #54CC14;
+  background: #92CDCF;
   color: white; }
 
 .main-nav-link.active {
   background: #4d5196; }
+
+.lists-content {
+  color: #EEEFF7;
+  text-align: center; }
+
+.task-list {
+  background-color: #EEEFF7;
+  color: #1C1D21;
+  text-align: left;
+  display: inline-block;
+  max-width: 33%;
+  margin: 0 auto; }
+  .task-list li {
+    padding: .2em; }
+  .task-list input {
+    border: 0;
+    background-color: #EEEFF7; }
+    .task-list input:focus {
+      outline: none; }
+
+.task-delete {
+  float: right; }
