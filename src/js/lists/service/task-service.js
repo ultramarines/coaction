@@ -1,23 +1,25 @@
-app.factory('tasksService', ['ajaxService', '$http', function(ajaxService, $http) {
+app.factory('tasksService', ['ajaxService', '$http', '$log', function(ajaxService, $http, $log) {
 
   return {
 
-    addTask: function(task, list) {
-      return task;
+    addTask: function(task) {
+      return ajaxService.call($http.post('/api/tasks', task));
     },
     list: function() {
-      return list;
+      return ajaxService.call($http.get('api/tasks'));
     },
     deleteTask: function(task) {
-      return true;
+      var url = '/api/tasks/' + task.id;
+      return ajaxService.call($http.delete(url));
     },
     toggleTask: function(task) {
-      if (task.status === false) {
-        task.status = true;
-      } else {
-        task.status = false;
-      }
-      return task;
+      //TODO: make this a thing
+      // if (task.status === false) {
+      //   task.status = true;
+      // } else {
+      //   task.status = false;
+      // }
+      // return task;
     }
   };
 

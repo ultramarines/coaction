@@ -1,0 +1,22 @@
+<nav class="main-nav" ng-controller="MainNavCtrl as vm">
+  <a class="main-nav-link" href="#/">Co-Spire</a>
+  <div ng-if="!vm.hasUser">
+    <button ng-click="vm.toggleLoginForm()" class="main-nav-link">login</button>
+    <form ng-show="vm.showLoginForm" ng-submit="vm.userLogin(vm.login)">
+      <input ng-model="vm.login.username" type="text" placeholder="username">
+      <input ng-model="vm.login.password" type="password" placeholder="password">
+      <button>login</button>
+    </form>
+  </div>
+  <div ng-if="vm.hasUser">
+  <button ng-click="vm.toggleUserMenu()" class="main-nav-link">{{vm.currentUser.username}}</button>
+    <ul ng-show="vm.showUserMenu">
+      <li>myProjects</li>
+      <li>myAssignments</li>
+      <li>myGroups</li>
+      <li>
+        <button ng-click="vm.logout()">logout</button>
+      </li>
+    </ul>
+  </div>
+</nav>
