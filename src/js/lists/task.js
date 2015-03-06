@@ -3,7 +3,7 @@ app.factory('Task', function() {
     spec = spec || {};
     return {
       title: spec.title,
-      status: spec.status
+      status: spec.status || false
     };
   };
 });

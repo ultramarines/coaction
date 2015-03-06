@@ -1,0 +1,27 @@
+.lists-content {
+  color: $dull;
+  text-align: center;
+}
+
+.task-list {
+  background-color: $dull;
+  color: $dark;
+  text-align: left;
+  display: inline-block;
+  max-width: 33%;
+  margin: 0 auto;
+  li {
+    padding: .2em;
+  }
+  input {
+    border: 0;
+    background-color: $dull;
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+.task-delete {
+  float: right;
+}
