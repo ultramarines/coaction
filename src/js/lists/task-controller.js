@@ -18,16 +18,17 @@ app.config(['$routeProvider', function($routeProvider){
   $routeProvider.when('/lists', routeDefinition);
   $routeProvider.when('/', routeDefinition);
 
-}]).controller('ListCtrl', ['tasksService', 'tasks', 'Task', function(tasksService, tasks, Task) {
+}]).controller('ListCtrl', ['tasksService', 'tasks', 'Task', '$log', function(tasksService, tasks, Task, $log) {
   var self = this;
   self.tasks = tasks;
   self.newTask = Task();
 
   self.addTask = function() {
     tasksService.addTask(self.newTask).then(function(result) {
-      var addedTask = result.data;
+      var addedTask = result.task;
       self.tasks.push(addedTask);
       self.newTask = Task();
+      $log.log(addedTask);
     }).catch(function (err) {
       $log.log(err);
       alert('addTask Failed :(');
@@ -40,13 +41,15 @@ app.config(['$routeProvider', function($routeProvider){
   };
 
   self.deleteTask = function(task) {
-    var deletedTask = tasksService.deleteTask(task);
-    if (deletedTask.id) {
+    tasksService.deleteTask(task).then(function(result) {
+      var deletedTask = result.task;
+      $log.log(deletedTask);
       var index = self.tasks.indexOf(task);
       self.tasks.splice(index, 1);
-    } else {
-      alert('deletion unsuccessful');
-    }
+    }).catch(function(err) {
+      $log.log(err);
+      alert('deletion failed');
+    });
   };
 
 }]);
