@@ -5,8 +5,7 @@ app.config(['$routeProvider', function($routeProvider){
     controllerAs: 'vm',
     resolve: {
       tasks: ['tasksService', function(tasksService) {
-          return [];
-          // tasksService.list();
+          return tasksService.list();
       }]
     }
   };
@@ -20,19 +19,28 @@ app.config(['$routeProvider', function($routeProvider){
   self.newTask = Task();
 
   self.addTask = function() {
-    tasksService.addTask(self.newTask);
-    self.tasks.push(self.newTask);
+    var createdTask = tasksService.addTask(self.newTask);
+    if (createdTask.id) {
+      self.tasks.push(createdTask);
+    } else {
+      alert('addition unsuccessful');
+    }
     self.newTask = Task();
   };
 
   self.toggleTask = function(task) {
+    //TODO: make taskService.toggleStatus() a thing, then make this a thing
     tasksService.toggleStatus(task);
   };
 
   self.deleteTask = function(task) {
-    tasksService.deleteTask(task);
-    var index = self.tasks.indexOf(task);
-    self.tasks.splice(index, 1);
+    var deletedTask = tasksService.deleteTask(task);
+    if (deletedTask.id) {
+      var index = self.tasks.indexOf(task);
+      self.tasks.splice(index, 1);
+    } else {
+      alert('deletion unsuccessful');
+    }
   };
 
 }]);

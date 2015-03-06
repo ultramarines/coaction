@@ -3,7 +3,8 @@ app.factory('Task', function() {
     spec = spec || {};
     return {
       title: spec.title,
-      status: spec.status
+      status: false,
+      assignee: spec.assignee || '',
     };
   };
 });
