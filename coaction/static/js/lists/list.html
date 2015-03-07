@@ -7,15 +7,22 @@
     <ul class="task-list">
       <li>
         <form ng-submit="vm.addTask()">
-          <input type="text" ng-model="vm.newTask.title">
+          <input type="text" ng-model="vm.newTask.title" >
           <button>add</button>
         </form>
       </li>
-      <li ng-repeat="task in vm.tasks | orderBy: 'task.id'">
-        <button ng-click="vm.completeTask(task)"
-        >done</button> {{ task.title }} <button class="task-delete" ng-click="vm.deleteTask(task)">X</button>
+      <li ng-repeat="task in vm.tasks | statusFilter : vm.statusFilter">
+        <button ng-class="task.status" ng-click="vm.toggleTask(task)">
+        <span ng-class="task.status">done</span>
+        </button> {{ task.title }} <button class="task-delete" ng-click="vm.deleteTask(task)">X</button>
       </li>
     </ul>
+
   </div>
+
+  <button ng-click="vm.filterByAll()">all</button>
+  <button ng-click="vm.filterByNew()">new</button>
+  <button ng-click="vm.filterByStarted()">begun</button>
+  <button ng-click="vm.filterByDone()">done</button>
 
 </div>

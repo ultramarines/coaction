@@ -13,13 +13,12 @@ app.factory('tasksService', ['ajaxService', '$http', '$log', function(ajaxServic
       return ajaxService.call($http.delete(url));
     },
     toggleTask: function(task) {
-      //TODO: make this a thing
-      // if (task.status === false) {
-      //   task.status = true;
-      // } else {
-      //   task.status = false;
-      // }
-      // return task;
+      var url = '/api/tasks/' + task.id;
+      if (task.status === 'new' || task.status === 'started') {
+        return ajaxService.call($http.put(url, {status: 'done'}));
+      } else {
+        return ajaxService.call($http.put(url, {status: 'started'}));
+      }
     }
   };
 
