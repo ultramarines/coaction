@@ -45,6 +45,25 @@ app.factory('current', ['ajaxService', '$http', '$log', function(ajaxService, $h
   //TODO: make this a thing
 }]);
 
+app.filter('statusFilter', function() {
+  return function(input, status) {
+
+    var filteredInput = [];
+
+    if (status === 'all') {
+      return input;
+    }
+
+    input.forEach(function(item) {
+      if (item.status === status) {
+        filteredInput.push(item);
+      }
+    });
+    
+    return filteredInput;
+  }
+})
+
 app.controller('Error404Ctrl', ['$location', function ($location) {
   this.message = 'Could not find: ' + $location.url();
 }]);
@@ -73,34 +92,68 @@ app.config(['$routeProvider', function($routeProvider){
   var self = this;
   self.tasks = tasks;
   self.newTask = Task();
+  self.statusFilter = 'all';
 
   self.addTask = function() {
-    tasksService.addTask(self.newTask).then(function(result) {
-      var addedTask = result.task;
-      self.tasks.push(addedTask);
-      self.newTask = Task();
-      $log.log(addedTask);
-    }).catch(function (err) {
-      $log.log(err);
-      alert('addTask Failed :(');
-    })
+    if (self.newTask.title === '') {
+      alert('you need to enter a task');
+      return;
+    }
+    tasksService.addTask(self.newTask)
+      .then(function(result) {
+        var addedTask = result.task;
+        self.tasks.push(addedTask);
+        self.newTask = Task();
+        $log.log(addedTask);
+      })
+      .catch(function (err) {
+        $log.log(err);
+        alert('addTask Failed :(');
+      });
   };
 
   self.toggleTask = function(task) {
-    //TODO: make taskService.toggleStatus() a thing, then make this a thing
-    tasksService.toggleStatus(task);
+    // var oldStatus = task.status;
+    tasksService.toggleTask(task)
+      .then(function(result) {
+        // var toggledTask = result.task;
+        self.tasks[self.tasks.indexOf(task)] = result.task;
+        // alert(toggledTask.title + ' was ' + oldStatus + ', is now ' + toggledTask.status);
+      })
+      .catch(function(err) {
+        $log.log(err);
+        alert('status unchanged');
+      })
   };
 
   self.deleteTask = function(task) {
-    tasksService.deleteTask(task).then(function(result) {
-      var deletedTask = result.task;
-      $log.log(deletedTask);
-      var index = self.tasks.indexOf(task);
-      self.tasks.splice(index, 1);
-    }).catch(function(err) {
-      $log.log(err);
-      alert('deletion failed');
-    });
+    tasksService.deleteTask(task)
+      .then(function(result) {
+        var deletedTask = result.task;
+        $log.log(deletedTask);
+        var index = self.tasks.indexOf(task);
+        self.tasks.splice(index, 1);
+      })
+      .catch(function(err) {
+        $log.log(err);
+        alert('deletion failed');
+      });
+  };
+
+  self.filterByNew = function() {
+    self.statusFilter = 'new';
+  };
+
+  self.filterByStarted = function() {
+    self.statusFilter = 'started';
+  };
+
+  self.filterByDone = function() {
+    self.statusFilter = 'done';
+  };
+
+  self.filterByAll = function() {
+    self.statusFilter = 'all';
   };
 
 }]);
@@ -109,9 +162,8 @@ app.factory('Task', function() {
   return function(spec) {
     spec = spec || {};
     return {
-      title: spec.title,
-      status: false,
-      assignee: spec.assignee || '',
+      title: spec.title || '',
+      status: 'new',
     };
   };
 });
@@ -187,13 +239,12 @@ app.factory('tasksService', ['ajaxService', '$http', '$log', function(ajaxServic
       return ajaxService.call($http.delete(url));
     },
     toggleTask: function(task) {
-      //TODO: make this a thing
-      // if (task.status === false) {
-      //   task.status = true;
-      // } else {
-      //   task.status = false;
-      // }
-      // return task;
+      var url = '/api/tasks/' + task.id;
+      if (task.status === 'new' || task.status === 'started') {
+        return ajaxService.call($http.put(url, {status: 'done'}));
+      } else {
+        return ajaxService.call($http.put(url, {status: 'started'}));
+      }
     }
   };
 
