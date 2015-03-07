@@ -4,15 +4,18 @@ app.factory('current', ['ajaxService', '$location', '$http', '$log', function(aj
 
   ajaxService.call($http.get('/api/me'))
     .then(function(result) {
-      self.user = result;
-      console.log(result);
+      self.user = result.user;
+      console.log(self.user.id);
+      $location.path('/lists');
+    }).catch(function(err){
+      $location.path('/');
     });
 
   self.login = function(user) {
     $log.log(user);
     ajaxService.call($http.post('/api/login', user))
       .then(function(result) {
-        self.user = result;
+        self.user = result.user;
         $location.path('/lists');
       });
   };

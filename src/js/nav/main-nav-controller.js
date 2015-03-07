@@ -1,5 +1,5 @@
 app.controller('MainNavCtrl',
-  ['ajaxService', '$http', '$location', '$log', 'current', 'User', function(ajaxService, $http, $location, $log, current, User) {
+  ['$log', 'current', function($log, current) {
 
     var self = this;
 

@@ -16,13 +16,11 @@ app.config(['$routeProvider', function($routeProvider){
   self.login = function() {
     $log.log(self.newLogin);
     self.current.login(self.newLogin);
-    // self.newLogin = User();
-    $location.path('/lists');
+    self.newLogin = User();
   };
 
   self.signup = function() {
     self.current.signup(self.newSignup);
     self.newSignup = User();
-    $location.path('/lists');
   };
 }]);
