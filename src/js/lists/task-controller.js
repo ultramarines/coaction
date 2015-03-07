@@ -1,4 +1,4 @@
-app.config(['$routeProvider', function($routeProvider){
+app.config(['$routeProvider', '$log', function($routeProvider, $log){
   var routeDefinition = {
     templateUrl: 'static/js/lists/list.html',
     controller: 'ListCtrl',
