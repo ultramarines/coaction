@@ -15,6 +15,89 @@ app.controller('Error404Ctrl', ['$location', function ($location) {
   this.message = 'Could not find: ' + $location.url();
 }]);
 
+app.factory('current', ['ajaxService', '$location', '$http', '$log', function(ajaxService, $location, $http, $log) {
+  var self = this;
+  self.user = {};
+
+  ajaxService.call($http.get('/api/me'))
+    .then(function(result) {
+      self.user = result;
+      console.log(result);
+    });
+
+  self.login = function(user) {
+    $log.log(user);
+    ajaxService.call($http.post('/api/login', user))
+      .then(function(result) {
+        self.user = result;
+        $location.path('/lists');
+      });
+  };
+
+  self.logout = function() {
+    ajaxService.call($http.get('/api/logout'))
+      .then(function(result) {
+        $log.log(result);
+        self.user = {};
+        $location.path('/');
+      });
+  };
+
+  self.signup = function(user) {
+    $log.log(user);
+    ajaxService.call($http.post('/api/register', user))
+      .then(function(result) {
+        self.user = result.user;
+        $log.log(result);
+        $location.path('/lists');
+      });
+  };
+
+  return self;
+
+  //TODO: make this a thing
+}]);
+
+app.config(['$routeProvider', function($routeProvider){
+  var routeDefinition = {
+    templateUrl: 'static/js/login/login.html',
+    controller: 'LoginCtrl',
+    controllerAs: 'vm',
+  };
+
+  $routeProvider.when('/', routeDefinition);
+
+}]).controller('LoginCtrl', ['$log', '$location', 'current', 'User', function($log, $location, current, User) {
+  var self = this;
+  self.newLogin = User();
+  self.newSignup = User();
+  self.current = current;
+
+  self.login = function() {
+    $log.log(self.newLogin);
+    self.current.login(self.newLogin);
+    // self.newLogin = User();
+    $location.path('/lists');
+  };
+
+  self.signup = function() {
+    self.current.signup(self.newSignup);
+    self.newSignup = User();
+    $location.path('/lists');
+  };
+}]);
+
+app.factory('User', function() {
+  return function (spec) {
+    spec = spec || {};
+    return {
+      name: spec.name,
+      email: spec.email,
+      password: spec.password
+    };
+  };
+});
+
 app.config(['$routeProvider', function($routeProvider){
   var routeDefinition = {
     templateUrl: 'static/js/lists/list.html',
@@ -105,89 +188,6 @@ app.factory('Task', function() {
     return {
       title: spec.title || '',
       status: 'new',
-    };
-  };
-});
-
-app.factory('current', ['ajaxService', '$location', '$http', '$log', function(ajaxService, $location, $http, $log) {
-  var self = this;
-  self.user = {};
-
-  ajaxService.call($http.get('/api/me'))
-    .then(function(result) {
-      self.user = result;
-      console.log(result);
-    });
-
-  self.login = function(user) {
-    $log.log(user);
-    ajaxService.call($http.post('/api/login', user))
-      .then(function(result) {
-        self.user = result;
-        $location.path('/lists');
-      });
-  };
-
-  self.logout = function() {
-    ajaxService.call($http.get('/api/logout'))
-      .then(function(result) {
-        $log.log(result);
-        self.user = {};
-        $location.path('/');
-      });
-  };
-
-  self.signup = function(user) {
-    $log.log(user);
-    ajaxService.call($http.post('/api/register', user))
-      .then(function(result) {
-        self.user = result.user;
-        $log.log(result);
-        $location.path('/lists');
-      });
-  };
-
-  return self;
-
-  //TODO: make this a thing
-}]);
-
-app.config(['$routeProvider', function($routeProvider){
-  var routeDefinition = {
-    templateUrl: 'static/js/login/login.html',
-    controller: 'LoginCtrl',
-    controllerAs: 'vm',
-  };
-
-  $routeProvider.when('/', routeDefinition);
-
-}]).controller('LoginCtrl', ['$log', '$location', 'current', 'User', function($log, $location, current, User) {
-  var self = this;
-  self.newLogin = User();
-  self.newSignup = User();
-  self.current = current;
-
-  self.login = function() {
-    $log.log(self.newLogin);
-    self.current.login(self.newLogin);
-    // self.newLogin = User();
-    $location.path('/lists');
-  };
-
-  self.signup = function() {
-    self.current.signup(self.newSignup);
-    self.newSignup = User();
-    $location.path('/lists');
-  };
-}]);
-
-app.factory('User', function() {
-  return function (spec) {
-    spec = spec || {};
-    return {
-      name: spec.name,
-      email: spec.email,
-      password: spec.password
     };
   };
 });
