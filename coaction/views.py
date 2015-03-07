@@ -254,7 +254,7 @@ def get_current_user():
     else:
         return jsonify({"ERROR": "No user is logged in."}), 401
 
-@coaction.route("/api/user/", methods=['GET'])
+@coaction.route("/api/users", methods=['GET'])
 def get_users():
     users = User.query.all()
     users = [user.to_dict() for user in users]
