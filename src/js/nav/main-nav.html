@@ -2,23 +2,6 @@
   <a href="#/">
     <img class="main-nav-logo" src="/static/img/cospiredarker.svg" alt="COSPIRE" />
   </a>
-  <div class="main-nav-link" ng-if="!vm.hasUser">
-    <button ng-click="vm.toggleLoginForm()" class="main-nav-link">login</button>
-    <form ng-show="vm.showLoginForm" ng-submit="vm.userLogin(vm.login)">
-      <input ng-model="vm.login.email" type="text" placeholder="email">
-      <input ng-model="vm.login.password" type="password" placeholder="password">
-      <button>login</button>
-    </form>
-  </div>
-  <div ng-if="vm.hasUser">
-  <button ng-click="vm.toggleUserMenu()" class="main-nav-link">{{vm.currentUser.email}}</button>
-    <ul ng-show="!vm.showUserMenu">
-      <li>myProjects</li>
-      <li>myAssignments</li>
-      <li>myGroups</li>
-      <li>
-        <button ng-click="vm.logout()">logout</button>
-      </li>
-    </ul>
-  </div>
+  <button ng-show="vm.current.user.id" class="main-nav-link" ng-click="vm.current.logout()">logout</button>
+
 </nav>

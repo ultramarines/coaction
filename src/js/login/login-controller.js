@@ -7,10 +7,21 @@ app.config(['$routeProvider', function($routeProvider){
 
   $routeProvider.when('/', routeDefinition);
 
-}]).controller('LoginCtrl', ['ajaxService', '$log', '$http', 'current', 'Login', 'Signup', function(ajaxService, $log, $http, current, Login, Signup) {
+}]).controller('LoginCtrl', ['$log', '$location', 'current', 'User', function($log, $location, current, User) {
   var self = this;
-  self.login = Login();
-  self.signup = Signup();
+  self.newLogin = User();
+  self.newSignup = User();
+  self.current = current;
 
+  self.login = function() {
+    self.current.login(self.newLogin);
+    self.newLogin = User();
+    $location.path('/lists');
+  };
 
+  self.signup = function() {
+    self.current.signup(self.newSignup);
+    self.newSignup = User();
+    $location.path('/lists');
+  };
 }]);
