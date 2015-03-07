@@ -11,6 +11,7 @@ class TaskForm(Form):
     status = StringField(validators=[DataRequired()])
     date_due = DateField()
     index = IntegerField(validators=[DataRequired()])
+    assigned_to = EmailField()
 
 class RegistrationForm(Form):
     name = StringField(validators=[DataRequired()])
