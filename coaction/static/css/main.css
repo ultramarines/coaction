@@ -26,21 +26,27 @@ table {
   border-collapse: collapse;
   border-spacing: 0; }
 
-@font-face {
-  font-family: "fontastic";
-  src: url("static/fonts/fontastic.eot");
-  src: url("static/fonts/fontastic.eot?#iefix") format("embedded-opentype"), url("static/fonts/fontastic.woff") format("woff"), url("static/fonts/fontastic.ttf") format("truetype"), url("static/fonts/fontastic.svg#fontastic") format("svg");
-  font-weight: normal;
-  font-style: normal; }
+/* Neat 1.7.0
+ * http://neat.bourbon.io
+ * Copyright 2012-2014 thoughtbot, inc.
+ * MIT License */
+html {
+  box-sizing: border-box; }
 
-[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
-  display: none !important; }
+*, *:before, *:after {
+  box-sizing: inherit; }
 
 body {
   font-family: sans-serif;
   line-height: 1.4em;
-  background: #1C1D21;
-  color: #444; }
+  background-color: #1C1D21;
+  background-image: linear-gradient(0deg, #1C1D21, #fff);
+  color: #444;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0; }
 
 h1 {
   font-size: 2em;
@@ -82,9 +88,7 @@ td {
   padding: 0.25em 0.5em; }
 
 input, textarea {
-  font-size: 1em;
-  border: 1px solid #DDD;
-  padding: 0.25em; }
+  font-size: 1em; }
 
 button {
   display: inline-block;
@@ -93,6 +97,25 @@ button {
   background: #92CDCF;
   color: white;
   font-size: 1em; }
+
+@font-face {
+  font-family: "fontastic";
+  src: url("static/fonts/fontastic.eot");
+  src: url("static/fonts/fontastic.eot?#iefix") format("embedded-opentype"), url("static/fonts/fontastic.woff") format("woff"), url("static/fonts/fontastic.ttf") format("truetype"), url("static/fonts/fontastic.svg#fontastic") format("svg");
+  font-weight: normal;
+  font-style: normal; }
+
+@font-face {
+  font-family: "Lobster";
+  src: url("static/fonts/Lobster-Regular.eot");
+  font-style: normal;
+  font-weight: 100; }
+
+h2 {
+  font-family: "Lobster"; }
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important; }
 
 .root-content {
   padding: 2em; }
@@ -103,9 +126,10 @@ button {
   margin-bottom: 1.5em; }
 
 .main-nav {
-  background: #6067b0;
-  color: #FFF;
   padding: 0 2em; }
+
+h1.page-title {
+  display: none; }
 
 .app-icon {
   color: inherit; }
@@ -125,10 +149,6 @@ button {
   padding: 1em 1em;
   color: inherit; }
 
-.main-nav-link:hover {
-  background: #92CDCF;
-  color: white; }
-
 .main-nav-link.active {
   background: #4d5196; }
 
@@ -144,14 +164,24 @@ button {
   max-width: 33%;
   margin: 0 auto; }
   .task-list li {
-    padding: .2em; }
+    padding: .2em;
+    vertical-align: middle; }
   .task-list input {
     border: 0;
-    background-color: #EEEFF7; }
+    background-color: transparent; }
     .task-list input:focus {
       outline: none; }
 
+.task-complete {
+  border-radius: 50%;
+  padding: 1em;
+  vertical-align: middle;
+  overflow: auto;
+  background-color: #fff;
+  border: 2px solid #92CDCF; }
+
 .task-delete {
+<<<<<<< HEAD
   float: right; }
 
 .new {
@@ -162,3 +192,29 @@ button {
 
 .done {
   color: slateblue !important; }
+=======
+  float: right;
+  color: #1C1D21;
+  background-color: transparent; }
+
+.main-nav-logo {
+  height: 2      em;
+  vertical-align: middle; }
+
+.main-nav {
+  background-color: #EEEFF7;
+  text-align: center; }
+
+.main-nav-logo {
+  height: 3em; }
+
+.main-nav-link {
+  position: relative; }
+  .main-nav-link form {
+    position: absolute;
+    bottom: -7em;
+    right: -5em;
+    padding: 1em;
+    background-color: #EEEFF7;
+    display: inline-block; }
+>>>>>>> ded295ae6c55fffb1bfd6727b4fbbe20ae9762a9

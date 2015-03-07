@@ -1,5 +1,5 @@
-from flask import Blueprint, flash, request, jsonify
-from flask.ext.login import login_user, logout_user, login_required
+from flask import Blueprint, request, jsonify
+from flask.ext.login import login_user, logout_user, login_required, current_user
 
 from .models import Task, User
 from .forms import TaskForm, RegistrationForm, LoginForm
@@ -18,6 +18,7 @@ def index():
 ## Add your API views here
 
 @coaction.route("/api/tasks", methods=["GET"])
+@login_required
 def get_tasks():
     tasks = Task.query.all()
     tasks = [task.to_dict() for task in tasks]
@@ -25,6 +26,7 @@ def get_tasks():
 
 
 @coaction.route("/api/tasks", methods=["POST"])
+@login_required
 def create_task():
     body = request.get_data(as_text=True)
     data = json.loads(body)
@@ -66,6 +68,7 @@ def create_task():
         return form.errors, 400
 
 @coaction.route("/api/tasks/<int:id>", methods=["DELETE"])
+@login_required
 def delete_task(id):
     task = Task.query.filter_by(id = id).first()
 
@@ -79,6 +82,7 @@ def delete_task(id):
 
 
 @coaction.route("/api/tasks/<int:id>", methods=['PUT'])
+@login_required
 def update_activity(id):
     # user = require_authorization()
     input_check = False
@@ -125,33 +129,56 @@ def update_activity(id):
         print("error")
         return jsonify({"ERROR": "Too Many Input Variables"}), 401
 
-@coaction.route("/api/register", methods = ['POST'])
-def register_user():
-        body = request.get_data(as_text=True)
-        data = json.loads(body)
-        #  Enter Required data into Form
-        form = RegistrationForm(name = data['name'],
-                            email = data['email'],
-                            password = data['password'],
-                            formdata=None, csrf_enabled=False)
-
-        if form.validate():
-            duplicate = User.query.filter_by(email = form.email.data).first()
-
-            if not duplicate:
-                user = User(name = form.name.data,
-                            email = form.email.data,
-                            password = form.password.data)
-
-                db.session.add(user)
-                db.session.commit()
-                login_user(user)
-
-                return jsonify({'user': user.to_dict() }), 201
-
-            else:
-                return jsonify({"ERROR": "Account with that email already exists"}), 401
-
+@coaction.route("/api/login", methods=['POST'])
+def login():
+    body = request.get_data(as_text=True)
+    data = json.loads(body)
+    form = LoginForm(email=data['email'],
+                     password=data['password'],
+                     formdata=None, csrf_enabled=False)
+    if form.validate() and not current_user.is_authenticated():
+        user = User.query.filter_by(email=form.email.data).first()
+        if user and user.check_password(form.password.data):
+            print(type(user))
+            login_user(user)
+            return jsonify({'user': user.to_dict()}), 201
         else:
+            return jsonify({"ERROR": "Invalid Email or Password"}), 401
+    else:
+        return jsonify({"ERROR": "Invalid Login Parameters"}), 401
 
-            return jsonify({"ERROR": "Invalid form data"}), 401
+
+@coaction.route("/api/register", methods=['POST'])
+def register_user():
+    body = request.get_data(as_text=True)
+    data = json.loads(body)
+    #  Enter Required data into Form
+    form = RegistrationForm(name=data['name'],
+                            email=data['email'],
+                            password=data['password'],
+                            formdata=None, csrf_enabled=False)
+    if form.validate():
+        duplicate = User.query.filter_by(email=form.email.data).first()
+        if not duplicate:
+            user = User(name=form.name.data,
+                        email=form.email.data,
+                        password=form.password.data)
+            db.session.add(user)
+            db.session.commit()
+            login_user(user)
+            return jsonify({'user': user.to_dict() }), 201
+        else:
+            return jsonify({"ERROR": "Account with that email already exists"}), 401
+    else:
+        return jsonify({"ERROR": "Invalid form data"}), 401
+
+
+@coaction.route("/api/logout", methods=['GET'])
+@login_required
+def logout():
+    if current_user.is_authenticated():
+        user = User.query.filter_by(id=current_user.id).first()
+        logout_user()
+        return jsonify({'user': user.to_dict()}), 201
+    else:
+        return jsonify({"ERROR": "No user is logged in."}), 401

@@ -22,21 +22,21 @@ app.controller('MainNavCtrl',
       } else {
         alert('you need to enter a username and password, dummy');
       }
-    }
+    };
 
     self.toggleLoginForm = function() {
       self.showLoginForm = !self.showLoginForm;
-    }
+    };
 
     self.toggleUserMenu = function() {
       self.showUserMenu = !self.showUserMenu;
-    }
+    };
 
     self.logout = function() {
       self.hasUser = current.logout();
       self.currentUser = current.user;
       self.showUserMenu = false;
-    }
+    };
 
     //TODO: create login dropdown
     //TODO: create current.user dropdown

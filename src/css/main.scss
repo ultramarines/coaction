@@ -1,8 +1,14 @@
 @import 'colors';
 @import 'reset';
+@import 'bourbon/bourbon';
+@import 'neat/neat';
+@import 'defaults';
 @import 'fonts';
 @import 'angular';
-@import 'defaults';
 @import 'common-layout';
 @import 'task-list';
+<<<<<<< HEAD
 @import 'taskstatus';
+=======
+@import 'mainnav';
+>>>>>>> ded295ae6c55fffb1bfd6727b4fbbe20ae9762a9
