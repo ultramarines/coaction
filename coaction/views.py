@@ -42,7 +42,7 @@ def create_task():
         form.date_due.data = data['date_due']
     # Validate Form
     if form.validate():
-        duplicate = Task.query.filter_by(title=form.title.data).first()
+        duplicate = Task.query.filter_by(title=form.title.data, user_id = current_user.id).first()
         # Enter Required Data into Model
         if not duplicate:
             task = Task(title=form.title.data,
@@ -242,6 +242,14 @@ def logout():
     if current_user.is_authenticated():
         user = User.query.filter_by(id=current_user.id).first()
         logout_user()
+        return jsonify({'user': user.to_dict()}), 201
+    else:
+        return jsonify({"ERROR": "No user is logged in."}), 401
+
+@coaction.route("/api/me", methods=['GET'])
+def get_current_user():
+    if current_user.is_authenticated():
+        user = User.query.filter_by(id = current_user.id).first()
         return jsonify({'user': user.to_dict()}), 201
     else:
         return jsonify({"ERROR": "No user is logged in."}), 401
