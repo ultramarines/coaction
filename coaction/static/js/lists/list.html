@@ -13,8 +13,10 @@
       </li>
       <li ng-repeat="task in vm.tasks | statusFilter : vm.statusFilter">
         <button class="ng-class: task.status;" ng-click="vm.toggleTask(task)">
-        <span class="ng-class: task.status;">done</span>
-        </button> {{ task.title }} <button class="task-delete" ng-click="vm.deleteTask(task)">X</button>
+          done
+        </button>
+        <span class="ng-class: task.status;">{{ task.title }}</span>
+        <button class="task-delete" ng-click="vm.deleteTask(task)">X</button>
       </li>
     </ul>
 

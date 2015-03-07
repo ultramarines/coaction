@@ -153,3 +153,12 @@ button {
 
 .task-delete {
   float: right; }
+
+.new {
+  color: firebrick !important; }
+
+.started {
+  color: seagreen !important; }
+
+.done {
+  color: slateblue !important; }
