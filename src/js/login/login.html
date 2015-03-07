@@ -1,0 +1,16 @@
+<div>
+  <span>login</span>
+  <form ng-submit="vm.login()">
+    <input type="text" ng-model="vm.login.email" placeholder="email">
+    <input type="password" ng-model="vm.login.password" placeholder="password">
+    <button>login</button>
+  </form>
+  <span>signup</span>
+  <form ng-submit="vm.signup()">
+    <input type="text" ng-model="vm.signup.username" placeholder="name">
+    <input type="text" ng-model="vm.signup.email" placeholder="email">
+    <input type="password" ng-model="vm.signup.password" placeholder="password">
+    <input type="password" placeholder="confirm password">
+    <button>signup</button>
+  </form>
+</div>

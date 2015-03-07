@@ -85,7 +85,6 @@ app.config(['$routeProvider', function($routeProvider){
   };
 
   $routeProvider.when('/lists', routeDefinition);
-  $routeProvider.when('/', routeDefinition);
 
 }]).controller('ListCtrl', ['tasksService', 'tasks', 'Task', function(tasksService, tasks, Task) {
   var self = this;
@@ -162,12 +161,39 @@ app.factory('Task', function() {
   };
 });
 
+app.config(['$routeProvider', function($routeProvider){
+  var routeDefinition = {
+    templateUrl: 'static/js/login/login.html',
+    controller: 'LoginCtrl',
+    controllerAs: 'vm',
+  };
+
+  $routeProvider.when('/', routeDefinition);
+
+}]).controller('LoginCtrl', ['ajaxService', '$log', '$http', 'current', 'Login', 'Signup', function(ajaxService, $log, $http, current, Login, Signup) {
+  var self = this;
+  self.login = Login();
+  self.signup = Signup();
+
+
+}]);
+
+app.factory('Signup', function() {
+  return function(spec) {
+    spec = spec || {};
+    return {
+      username: spec.username,
+      email: spec.email,
+      password: spec.password,
+    };
+  };
+});
+
 app.factory('Login', function() {
   return function (spec) {
     spec = spec || {};
-
     return {
-      username: spec.username,
+      email: spec.email,
       password: spec.password
     };
   };
@@ -189,7 +215,7 @@ app.controller('MainNavCtrl',
     self.currentUser = current.user;
 
     self.userLogin = function(login) {
-      if (login.username && login.password) {
+      if (login.email && login.password) {
         self.hasUser = current.login(self.login);
         self.currentUser = current.user;
         self.showLoginForm = false;

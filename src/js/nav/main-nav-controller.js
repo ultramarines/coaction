@@ -14,7 +14,7 @@ app.controller('MainNavCtrl',
     self.currentUser = current.user;
 
     self.userLogin = function(login) {
-      if (login.username && login.password) {
+      if (login.email && login.password) {
         self.hasUser = current.login(self.login);
         self.currentUser = current.user;
         self.showLoginForm = false;
