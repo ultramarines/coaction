@@ -7,5 +7,9 @@ module.exports = {
     './src/init.js'
   ],
 
-  vendor: []
+  vendor: [
+  'bower_components/angular/angular.min.js',
+  'bower_components/angular-route/angular-route.min.js'
+]
+
 };

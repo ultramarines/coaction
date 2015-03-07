@@ -9,9 +9,11 @@
 }
 
 .main-nav {
-  background: #6067b0;
-  color: #FFF;
   padding: 0 2em;
+}
+
+h1.page-title {
+  display: none;
 }
 
 .app-icon {
@@ -32,11 +34,6 @@
   display: inline-block;
   padding: 1em 1em;
   color: inherit;
-}
-
-.main-nav-link:hover {
-  background: $alt-accent-bg;
-  color: $alt-accent-fg;
 }
 
 .main-nav-link.active {

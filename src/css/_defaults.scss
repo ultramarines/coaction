@@ -1,8 +1,15 @@
 body {
   font-family: sans-serif;
   line-height: 1.4em;
-  background: $bg-color;
+  background-color: $bg-color;
+  background-image: linear-gradient(0deg, $bg-color, #fff);
   color: $fg-color;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
 }
 
 h1 { font-size: 2em; margin: .67em 0 }
@@ -37,8 +44,6 @@ td {
 
 input, textarea {
   font-size: 1em;
-  border: 1px solid $input-border-color;
-  padding: 0.25em;
 }
 
 button {
