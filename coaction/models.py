@@ -1,7 +1,5 @@
-from .extensions import db , login_manager, bcrypt
+from .extensions import db, login_manager, bcrypt
 from flask.ext.login import UserMixin
-
-
 
 
 class Task(db.Model):
@@ -14,7 +12,6 @@ class Task(db.Model):
     date_assigned = db.Column(db.Date, nullable=False)
     date_due = db.Column(db.Date)
     index = db.Column(db.Integer)
-
 
     def to_dict(self):
         return {"id": self.id,
@@ -42,7 +39,6 @@ class User(db.Model, UserMixin):
 
     def get_password(self):
         return getattr(self, "_password", None)
-
 
     def set_password(self, password):
         self._password = password
