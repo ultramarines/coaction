@@ -107,7 +107,7 @@ button {
 
 @font-face {
   font-family: "Lobster";
-  src: url("static/fonts/Lobster-Regular.eot");
+  src: url("../static/fonts/Lobster-Regular.ttf");
   font-style: normal;
   font-weight: 100; }
 
