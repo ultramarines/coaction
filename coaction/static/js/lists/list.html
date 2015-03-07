@@ -15,20 +15,16 @@
       </li>
       <li ng-repeat="task in vm.tasks | statusFilter : vm.statusFilter">
         <input class="task-complete" ng-class="task.status" ng-click="vm.toggleTask(task)">
-<<<<<<< HEAD
-        <span ng-class="task.status"> {{ task.title }} </span>
-=======
         <span class="ng-class: task.status;">{{ task.title }}</span>
->>>>>>> 7e907939ba020bf996319a8f31a3af3ff7faa1f4
         <button class="task-delete" ng-click="vm.deleteTask(task)">X</button>
       </li>
     </ul>
 
+    <button ng-click="vm.filterByAll()">all</button>
+    <button ng-click="vm.filterByNew()">new</button>
+    <button ng-click="vm.filterByStarted()">begun</button>
+    <button ng-click="vm.filterByDone()">done</button>
   </div>
 
-  <button ng-click="vm.filterByAll()">all</button>
-  <button ng-click="vm.filterByNew()">new</button>
-  <button ng-click="vm.filterByStarted()">begun</button>
-  <button ng-click="vm.filterByDone()">done</button>
 
 </div>
