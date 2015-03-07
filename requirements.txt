@@ -29,3 +29,7 @@ webtest
 
 # Management script
 Flask-Script
+
+#Login and Users
+Flask-Bcrypt
+Flask-Login

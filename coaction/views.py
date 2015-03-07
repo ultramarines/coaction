@@ -1,7 +1,9 @@
 from flask import Blueprint, flash, request, jsonify
-from .models import Task
-from .forms import TaskForm
-from .extensions import db
+from flask.ext.login import login_user, logout_user, login_required
+
+from .models import Task, User
+from .forms import TaskForm, RegistrationForm, LoginForm
+from .extensions import db, login_manager
 import json
 from datetime import date, datetime
 
@@ -25,27 +27,22 @@ def get_tasks():
 @coaction.route("/api/tasks", methods=["POST"])
 def create_task():
     body = request.get_data(as_text=True)
-    print("body ", body)
     data = json.loads(body)
-    print("data ", data)
     #  Enter Required data into Form
     form = TaskForm(title=data['title'],
                     status="new",
                     index="0",
                     formdata=None, csrf_enabled=False)
-    print("form ", form.title.data)
     # Enter Optional data into Form
     if 'description' in data:
         form.description.data = data['description']
     if 'date_due' in data:
         form.date_due.data = data['date_due']
-    print("About to validate")
     # Validate Form
     if form.validate():
         duplicate = Task.query.filter_by(title=form.title.data).first()
         # Enter Required Data into Model
         if not duplicate:
-            print("create task")
             task = Task(title=form.title.data,
                         status=form.status.data,
                         project_id=0,
@@ -64,11 +61,8 @@ def create_task():
             return (jsonify({ 'task': task }), 201)
 
         else:
-            print("jsonify error")
             return jsonify({"ERROR": "duplicate task"}), 406
     else:
-        print("form error")
-        print(form.errors)
         return form.errors, 400
 
 @coaction.route("/api/tasks/<int:id>", methods=["DELETE"])
@@ -130,3 +124,34 @@ def update_activity(id):
     else:
         print("error")
         return jsonify({"ERROR": "Too Many Input Variables"}), 401
+
+@coaction.route("/api/register", methods = ['POST'])
+def register_user():
+        body = request.get_data(as_text=True)
+        data = json.loads(body)
+        #  Enter Required data into Form
+        form = RegistrationForm(name = data['name'],
+                            email = data['email'],
+                            password = data['password'],
+                            formdata=None, csrf_enabled=False)
+
+        if form.validate():
+            duplicate = User.query.filter_by(email = form.email.data).first()
+
+            if not duplicate:
+                user = User(name = form.name.data,
+                            email = form.email.data,
+                            password = form.password.data)
+
+                db.session.add(user)
+                db.session.commit()
+                login_user(user)
+
+                return jsonify({'user': user.to_dict() }), 201
+
+            else:
+                return jsonify({"ERROR": "Account with that email already exists"}), 401
+
+        else:
+
+            return jsonify({"ERROR": "Invalid form data"}), 401
