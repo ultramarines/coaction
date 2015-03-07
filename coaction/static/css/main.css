@@ -181,18 +181,6 @@ h1.page-title {
   border: 2px solid #92CDCF; }
 
 .task-delete {
-<<<<<<< HEAD
-  float: right; }
-
-.new {
-  color: firebrick !important; }
-
-.started {
-  color: seagreen !important; }
-
-.done {
-  color: slateblue !important; }
-=======
   float: right;
   color: #1C1D21;
   background-color: transparent; }
@@ -217,4 +205,3 @@ h1.page-title {
     padding: 1em;
     background-color: #EEEFF7;
     display: inline-block; }
->>>>>>> ded295ae6c55fffb1bfd6727b4fbbe20ae9762a9
