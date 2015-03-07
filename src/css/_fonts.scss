@@ -1,18 +1,18 @@
 @font-face {
   //check: a, denied: c, graduate: b
   font-family: "fontastic";
-  src:url("static/fonts/fontastic.eot");
-  src:url("static/fonts/fontastic.eot?#iefix") format("embedded-opentype"),
-    url("static/fonts/fontastic.woff") format("woff"),
-    url("static/fonts/fontastic.ttf") format("truetype"),
-    url("static/fonts/fontastic.svg#fontastic") format("svg");
+  src:url("../fonts/fontastic.eot");
+  src:url("../fonts/fontastic.eot?#iefix") format("embedded-opentype"),
+    url("../fonts/fontastic.woff") format("woff"),
+    url("../fonts/fontastic.ttf") format("truetype"),
+    url("../fonts/fontastic.svg#fontastic") format("svg");
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: "Lobster";
-  src:url("static/fonts/Lobster-Regular.eot");
+  src:url("../fonts/Lobster-Regular.ttf");
   font-style: normal;
   font-weight: 100;
 }

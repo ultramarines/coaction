@@ -32,6 +32,11 @@
   border: 2px solid $accent-color;
   // -webkit-appearance: none;
 }
+
+.task-complete.done {
+
+}
+
 .task-delete {
   float: right;
   color: $primary-text;
