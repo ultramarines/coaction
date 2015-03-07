@@ -123,7 +123,7 @@ app.config(['$routeProvider', function($routeProvider){
       .catch(function(err) {
         $log.log(err);
         alert('status unchanged');
-      })
+      });
   };
 
   self.deleteTask = function(task) {
