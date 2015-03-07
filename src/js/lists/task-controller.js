@@ -4,11 +4,12 @@ app.config(['$routeProvider', function($routeProvider){
     controller: 'ListCtrl',
     controllerAs: 'vm',
     resolve: {
-      tasks: ['tasksService', function(tasksService) {
+      tasks: ['tasksService', '$log', function(tasksService, $log) {
           return tasksService.list().then(function(result) {
+            $log.log(result);
             return result.tasks;
           }).catch(function(err) {
-            alert('tasks failed to load');
+            $log.log(err + ' -> tasks failed to load');
           });
       }]
     }

@@ -11,59 +11,6 @@ app.config(['$routeProvider', function ($routeProvider) {
   });
 }]);
 
-app.factory('ajaxService', ['$log', function($log) {
-
-  return {
-    call: function(p) {
-      return p.then(function (result) {
-        return result.data;
-      })
-      .catch(function (error) {
-        $log.log(error);
-      });
-    }
-  };
-
-}]);
-
-app.factory('current', ['ajaxService', '$http', '$log', function(ajaxService, $http, $log) {
-  var self = this;
-  self.user = {};
-
-  self.login = function(login) {
-    self.user.username = login.username;
-    return true;
-  };
-
-  self.logout = function() {
-    self.user = {};
-    return false;
-  };
-
-  return self;
-
-  //TODO: make this a thing
-}]);
-
-app.filter('statusFilter', function() {
-  return function(input, status) {
-
-    var filteredInput = [];
-
-    if (status === 'all') {
-      return input;
-    }
-
-    input.forEach(function(item) {
-      if (item.status === status) {
-        filteredInput.push(item);
-      }
-    });
-
-    return filteredInput;
-  };
-});
-
 app.controller('Error404Ctrl', ['$location', function ($location) {
   this.message = 'Could not find: ' + $location.url();
 }]);
@@ -74,11 +21,12 @@ app.config(['$routeProvider', function($routeProvider){
     controller: 'ListCtrl',
     controllerAs: 'vm',
     resolve: {
-      tasks: ['tasksService', function(tasksService) {
+      tasks: ['tasksService', '$log', function(tasksService, $log) {
           return tasksService.list().then(function(result) {
+            $log.log(result);
             return result.tasks;
           }).catch(function(err) {
-            alert('tasks failed to load');
+            $log.log(err + ' -> tasks failed to load');
           });
       }]
     }
@@ -161,6 +109,52 @@ app.factory('Task', function() {
   };
 });
 
+app.factory('current', ['ajaxService', '$location', '$http', '$log', function(ajaxService, $location, $http, $log) {
+  var self = this;
+  self.user = {};
+
+  ajaxService.call($http.get('/api/me'))
+    .then(function(result) {
+      self.user = result.user;
+      console.log(self.user.id);
+      $location.path('/lists');
+    }).catch(function(err){
+      $location.path('/');
+    });
+
+  self.login = function(user) {
+    $log.log(user);
+    ajaxService.call($http.post('/api/login', user))
+      .then(function(result) {
+        self.user = result.user;
+        $location.path('/lists');
+      });
+  };
+
+  self.logout = function() {
+    ajaxService.call($http.get('/api/logout'))
+      .then(function(result) {
+        $log.log(result);
+        self.user = {};
+        $location.path('/');
+      });
+  };
+
+  self.signup = function(user) {
+    $log.log(user);
+    ajaxService.call($http.post('/api/register', user))
+      .then(function(result) {
+        self.user = result.user;
+        $log.log(result);
+        $location.path('/lists');
+      });
+  };
+
+  return self;
+
+  //TODO: make this a thing
+}]);
+
 app.config(['$routeProvider', function($routeProvider){
   var routeDefinition = {
     templateUrl: 'static/js/login/login.html',
@@ -170,29 +164,29 @@ app.config(['$routeProvider', function($routeProvider){
 
   $routeProvider.when('/', routeDefinition);
 
-}]).controller('LoginCtrl', ['ajaxService', '$log', '$http', 'current', 'Login', 'Signup', function(ajaxService, $log, $http, current, Login, Signup) {
+}]).controller('LoginCtrl', ['$log', '$location', 'current', 'User', function($log, $location, current, User) {
   var self = this;
-  self.login = Login();
-  self.signup = Signup();
+  self.newLogin = User();
+  self.newSignup = User();
+  self.current = current;
 
+  self.login = function() {
+    $log.log(self.newLogin);
+    self.current.login(self.newLogin);
+    self.newLogin = User();
+  };
 
+  self.signup = function() {
+    self.current.signup(self.newSignup);
+    self.newSignup = User();
+  };
 }]);
 
-app.factory('Signup', function() {
-  return function(spec) {
-    spec = spec || {};
-    return {
-      username: spec.username,
-      email: spec.email,
-      password: spec.password,
-    };
-  };
-});
-
-app.factory('Login', function() {
+app.factory('User', function() {
   return function (spec) {
     spec = spec || {};
     return {
+      name: spec.name,
       email: spec.email,
       password: spec.password
     };
@@ -200,49 +194,47 @@ app.factory('Login', function() {
 });
 
 app.controller('MainNavCtrl',
-  ['ajaxService', '$http', '$location', '$log', 'current', 'Login', function(ajaxService, $http, $location, $log, current, Login) {
+  ['$log', 'current', function($log, current) {
 
     var self = this;
 
-    self.login = Login();
-
-    self.showLoginForm = false;
-
-    self.showUserMenu = false;
-
-    self.hasUser = false;
-
-    self.currentUser = current.user;
-
-    self.userLogin = function(login) {
-      if (login.email && login.password) {
-        self.hasUser = current.login(self.login);
-        self.currentUser = current.user;
-        self.showLoginForm = false;
-        self.login = Login();
-      } else {
-        alert('you need to enter a username and password, dummy');
-      }
-    };
-
-    self.toggleLoginForm = function() {
-      self.showLoginForm = !self.showLoginForm;
-    };
-
-    self.toggleUserMenu = function() {
-      self.showUserMenu = !self.showUserMenu;
-    };
-
-    self.logout = function() {
-      self.hasUser = current.logout();
-      self.currentUser = current.user;
-      self.showUserMenu = false;
-    };
-
-    //TODO: create login dropdown
-    //TODO: create current.user dropdown
+    self.current = current;
 
   }]);
+
+app.factory('ajaxService', ['$log', function($log) {
+
+  return {
+    call: function(p) {
+      return p.then(function (result) {
+        return result.data;
+      })
+      .catch(function (error) {
+        $log.log(error);
+      });
+    }
+  };
+
+}]);
+
+app.filter('statusFilter', function() {
+  return function(input, status) {
+
+    var filteredInput = [];
+
+    if (status === 'all') {
+      return input;
+    }
+
+    input.forEach(function(item) {
+      if (item.status === status) {
+        filteredInput.push(item);
+      }
+    });
+
+    return filteredInput;
+  };
+});
 
 app.factory('tasksService', ['ajaxService', '$http', function(ajaxService, $http) {
 
