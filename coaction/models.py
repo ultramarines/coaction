@@ -28,7 +28,6 @@ class Task(db.Model):
                 "assigned_to":self.assigned_to}
 
 
-
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(255), nullable=False)

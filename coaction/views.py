@@ -253,3 +253,12 @@ def get_current_user():
         return jsonify({'user': user.to_dict()}), 201
     else:
         return jsonify({"ERROR": "No user is logged in."}), 401
+
+@coaction.route("/api/user/", methods=['GET'])
+def get_users():
+    users = User.query.all()
+    users = [user.to_dict() for user in users]
+    if users:
+        return jsonify({'users': users}), 201
+    else:
+        return jsonify({"ERROR": "No users available."}), 401
