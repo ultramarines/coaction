@@ -107,11 +107,7 @@ button {
 
 @font-face {
   font-family: "Lobster";
-<<<<<<< HEAD
-  src: url("../static/fonts/Lobster-Regular.ttf");
-=======
   src: url("../fonts/Lobster-Regular.ttf");
->>>>>>> f945d8cb2cdda849235d60bc2ef2e6e20bbde102
   font-style: normal;
   font-weight: 100; }
 
