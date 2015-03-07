@@ -12,6 +12,8 @@ class Task(db.Model):
     date_assigned = db.Column(db.Date, nullable=False)
     date_due = db.Column(db.Date)
     index = db.Column(db.Integer)
+    assigned_by = db.Column(db.String)
+    assigned_to = db.Column(db.String)
 
     def to_dict(self):
         return {"id": self.id,
@@ -21,7 +23,9 @@ class Task(db.Model):
                 "user_id": self.user_id,
                 "project_id": self.project_id,
                 "date_assigned": str(self.date_assigned),
-                "date_due": str(self.date_due)}
+                "date_due": str(self.date_due),
+                "assigned_by": self.assigned_by,
+                "assigned_to":self.assigned_to}
 
 
 

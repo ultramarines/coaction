@@ -20,7 +20,7 @@ def index():
 @coaction.route("/api/tasks", methods=["GET"])
 @login_required
 def get_tasks():
-    tasks = Task.query.all()
+    tasks = Task.query.filter_by(user_id = current_user.id)
     tasks = [task.to_dict() for task in tasks]
     return jsonify({"tasks": tasks}), 201
 
@@ -47,6 +47,7 @@ def create_task():
         if not duplicate:
             task = Task(title=form.title.data,
                         status=form.status.data,
+                        user_id = current_user.id,
                         project_id=0,
                         date_assigned=date.today(),
                         index=form.index.data)
@@ -79,6 +80,68 @@ def delete_task(id):
 
     else:
         return jsonify({"ERROR": "task not found"}), 406
+
+@coaction.route("/api/task_assignment", methods=["GET"])
+@login_required
+def view_task_assignments():
+
+    tasks = Task.query.filter_by(assigned_by = current_user.email)
+    tasks = [task.to_dict() for task in tasks]
+    return jsonify({"tasks": tasks}), 201
+
+@coaction.route("/api/task_assignment", methods=["POST"])
+@login_required
+def assign_task():
+    body = request.get_data(as_text=True)
+    data = json.loads(body)
+    #  Enter Required data into Form
+    form = TaskForm(title=data['title'],
+                    assigned_to = data["assigned_to"],
+                    status="new",
+                    index="0",
+                    formdata=None, csrf_enabled=False)
+    # Enter Optional data into Form
+    if 'description' in data:
+        form.description.data = data['description']
+    if 'date_due' in data:
+        form.date_due.data = data['date_due']
+
+    # Validate Form
+    if form.validate():
+        #get the user of assignee
+        assigned_to = form.assigned_to.data
+        print("assigned to: ", assigned_to)
+
+
+        assigned_to = User.query.filter_by(email = assigned_to).first()
+        print(assigned_to)
+        #check if task has already been assigned
+        duplicate = Task.query.filter_by(user_id = assigned_to.id, title = form.title.data).first()
+        if not duplicate:
+            task = Task(title=form.title.data,
+                        status=form.status.data,
+                        user_id = assigned_to.id,
+                        project_id = 0,
+                        date_assigned=date.today(),
+                        index=form.index.data,
+                        assigned_by = current_user.email,
+                        assigned_to  = assigned_to.name)
+            # Enter Optional Data Into Model
+            if form.description.data:
+                task.description = form.description.data
+            if form.date_due.data:
+                data_date = datetime.strptime(data['date_due'], "%Y-%m-%d")
+                task.date_due = data_date
+            db.session.add(task)
+            db.session.commit()
+            task = task.to_dict()
+
+            return (jsonify({ 'task': task }), 201)
+
+        else:
+            return jsonify({"ERROR": "duplicate task"}), 406
+    else:
+        return form.errors, 400
 
 
 @coaction.route("/api/tasks/<int:id>", methods=['PUT'])
