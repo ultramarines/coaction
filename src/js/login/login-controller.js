@@ -14,8 +14,9 @@ app.config(['$routeProvider', function($routeProvider){
   self.current = current;
 
   self.login = function() {
+    $log.log(self.newLogin);
     self.current.login(self.newLogin);
-    self.newLogin = User();
+    // self.newLogin = User();
     $location.path('/lists');
   };
 
