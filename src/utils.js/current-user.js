@@ -5,12 +5,12 @@ app.factory('current', ['ajaxService', '$http', '$log', function(ajaxService, $h
   self.login = function(login) {
     self.user.username = login.username;
     return true;
-  }
+  };
 
   self.logout = function() {
-    self.user = {}
+    self.user = {};
     return false;
-  }
+  };
 
   return self;
 

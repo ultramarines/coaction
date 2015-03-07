@@ -14,17 +14,9 @@
         </form>
       </li>
       <li ng-repeat="task in vm.tasks | statusFilter : vm.statusFilter">
-<<<<<<< HEAD
-        <button class="ng-class: task.status;" ng-click="vm.toggleTask(task)">
-          done
-        </button>
-        <span class="ng-class: task.status;">{{ task.title }}</span>
-        <button class="task-delete" ng-click="vm.deleteTask(task)">X</button>
-=======
         <input class="task-complete" ng-class="task.status" ng-click="vm.toggleTask(task)">
-        <span ng-class="task.status">done</span>
-        </button> {{ task.title }} <button class="task-delete" ng-click="vm.deleteTask(task)">X</button>
->>>>>>> ded295ae6c55fffb1bfd6727b4fbbe20ae9762a9
+        <span ng-class="task.status"> {{ task.title }} </span>
+        <button class="task-delete" ng-click="vm.deleteTask(task)">X</button>
       </li>
     </ul>
 

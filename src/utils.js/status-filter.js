@@ -12,7 +12,7 @@ app.filter('statusFilter', function() {
         filteredInput.push(item);
       }
     });
-    
+
     return filteredInput;
-  }
-})
+  };
+});

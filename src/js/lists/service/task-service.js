@@ -1,4 +1,4 @@
-app.factory('tasksService', ['ajaxService', '$http', '$log', function(ajaxService, $http, $log) {
+app.factory('tasksService', ['ajaxService', '$http', function(ajaxService, $http) {
 
   return {
 

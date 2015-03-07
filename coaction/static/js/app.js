@@ -33,12 +33,12 @@ app.factory('current', ['ajaxService', '$http', '$log', function(ajaxService, $h
   self.login = function(login) {
     self.user.username = login.username;
     return true;
-  }
+  };
 
   self.logout = function() {
-    self.user = {}
+    self.user = {};
     return false;
-  }
+  };
 
   return self;
 
@@ -59,10 +59,10 @@ app.filter('statusFilter', function() {
         filteredInput.push(item);
       }
     });
-    
+
     return filteredInput;
-  }
-})
+  };
+});
 
 app.controller('Error404Ctrl', ['$location', function ($location) {
   this.message = 'Could not find: ' + $location.url();
@@ -78,7 +78,6 @@ app.config(['$routeProvider', function($routeProvider){
           return tasksService.list().then(function(result) {
             return result.tasks;
           }).catch(function(err) {
-            $log.log(err);
             alert('tasks failed to load');
           });
       }]
@@ -88,7 +87,7 @@ app.config(['$routeProvider', function($routeProvider){
   $routeProvider.when('/lists', routeDefinition);
   $routeProvider.when('/', routeDefinition);
 
-}]).controller('ListCtrl', ['tasksService', 'tasks', 'Task', '$log', function(tasksService, tasks, Task, $log) {
+}]).controller('ListCtrl', ['tasksService', 'tasks', 'Task', function(tasksService, tasks, Task) {
   var self = this;
   self.tasks = tasks;
   self.newTask = Task();
@@ -104,10 +103,8 @@ app.config(['$routeProvider', function($routeProvider){
         var addedTask = result.task;
         self.tasks.push(addedTask);
         self.newTask = Task();
-        $log.log(addedTask);
       })
       .catch(function (err) {
-        $log.log(err);
         alert('addTask Failed :(');
       });
   };
@@ -121,7 +118,6 @@ app.config(['$routeProvider', function($routeProvider){
         // alert(toggledTask.title + ' was ' + oldStatus + ', is now ' + toggledTask.status);
       })
       .catch(function(err) {
-        $log.log(err);
         alert('status unchanged');
       });
   };
@@ -130,12 +126,10 @@ app.config(['$routeProvider', function($routeProvider){
     tasksService.deleteTask(task)
       .then(function(result) {
         var deletedTask = result.task;
-        $log.log(deletedTask);
         var index = self.tasks.indexOf(task);
         self.tasks.splice(index, 1);
       })
       .catch(function(err) {
-        $log.log(err);
         alert('deletion failed');
       });
   };
@@ -224,7 +218,7 @@ app.controller('MainNavCtrl',
 
   }]);
 
-app.factory('tasksService', ['ajaxService', '$http', '$log', function(ajaxService, $http, $log) {
+app.factory('tasksService', ['ajaxService', '$http', function(ajaxService, $http) {
 
   return {
 
