@@ -12,8 +12,9 @@
         </form>
       </li>
       <li ng-repeat="task in vm.tasks | statusFilter : vm.statusFilter">
-        <button ng-click="vm.toggleTask(task)"
-        >done</button> {{ task.title }} <button class="task-delete" ng-click="vm.deleteTask(task)">X</button>
+        <button ng-class="task.status" ng-click="vm.toggleTask(task)">
+        <span ng-class="task.status">done</span>
+        </button> {{ task.title }} <button class="task-delete" ng-click="vm.deleteTask(task)">X</button>
       </li>
     </ul>
 
