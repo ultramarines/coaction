@@ -14,7 +14,7 @@
         </form>
       </li>
       <li ng-repeat="task in vm.tasks | statusFilter : vm.statusFilter">
-        <input class="task-complete" ng-class="task.status" ng-click="vm.toggleTask(task)">
+        <input type="checkbox" class="task-complete ng-class: task.status;" ng-class="task.status" ng-click="vm.toggleTask(task)">
         <span class="ng-class: task.status;">{{ task.title }}</span>
         <button class="task-delete" ng-click="vm.deleteTask(task)">X</button>
       </li>

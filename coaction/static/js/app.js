@@ -115,15 +115,18 @@ app.factory('current', ['ajaxService', '$location', '$http', '$log', function(aj
 
   ajaxService.call($http.get('/api/me'))
     .then(function(result) {
-      self.user = result;
-      console.log(result);
+      self.user = result.user;
+      console.log(self.user.id);
+      $location.path('/lists');
+    }).catch(function(err){
+      $location.path('/');
     });
 
   self.login = function(user) {
     $log.log(user);
     ajaxService.call($http.post('/api/login', user))
       .then(function(result) {
-        self.user = result;
+        self.user = result.user;
         $location.path('/lists');
       });
   };
@@ -170,14 +173,12 @@ app.config(['$routeProvider', function($routeProvider){
   self.login = function() {
     $log.log(self.newLogin);
     self.current.login(self.newLogin);
-    // self.newLogin = User();
-    $location.path('/lists');
+    self.newLogin = User();
   };
 
   self.signup = function() {
     self.current.signup(self.newSignup);
     self.newSignup = User();
-    $location.path('/lists');
   };
 }]);
 
@@ -193,7 +194,7 @@ app.factory('User', function() {
 });
 
 app.controller('MainNavCtrl',
-  ['ajaxService', '$http', '$location', '$log', 'current', 'User', function(ajaxService, $http, $location, $log, current, User) {
+  ['$log', 'current', function($log, current) {
 
     var self = this;
 
