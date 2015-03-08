@@ -5,10 +5,4 @@ app.controller('MainNavCtrl',
 
     self.current = current;
 
-    self.location = $location.url();
-
-    if( self.location === '/') {
-      self.hideLogo = true;
-    }
-
   }]);

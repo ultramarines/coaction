@@ -23,7 +23,7 @@ app.config(['$routeProvider', function($routeProvider){
     resolve: {
       tasks: ['tasksService', '$log', function(tasksService, $log) {
           return tasksService.taskList().then(function(result) {
-            $log.log(result);
+            console.log(result);
             return result.tasks;
           }).catch(function(err) {
             $log.log(err + ' -> tasks failed to load');
@@ -117,6 +117,10 @@ app.config(['$routeProvider', function($routeProvider){
     }
   };
 
+  self.dueDate = function() {
+
+  };
+
   self.filterByNew = function() {
     self.statusFilter = 'new';
   };
@@ -131,6 +135,13 @@ app.config(['$routeProvider', function($routeProvider){
 
   self.filterByAll = function() {
     self.statusFilter = 'all';
+  };
+
+
+  self.dateOptions = {
+    changeYear: true,
+    changeMonth: true,
+    dateFormat: "yy-mm-dd"
   };
 
 }]);
@@ -254,6 +265,18 @@ app.factory('User', function() {
   };
 });
 
+<<<<<<< HEAD
+=======
+app.controller('MainNavCtrl',
+  ['$log', 'current', '$location', function($log, current, $location) {
+
+    var self = this;
+
+    self.current = current;
+
+  }]);
+
+>>>>>>> 18074aeefffa449ad07709405074ee1fc4c50c86
 app.factory('ajaxService', ['$log', function($log) {
 
   return {

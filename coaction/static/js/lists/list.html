@@ -18,26 +18,30 @@
         <span class="ng-class: task.status;" ng-click="vm.toggleDetail(task)">{{ task.title }}</span>
         <button class="task-delete" ng-click="vm.deleteTask(task)">X</button>
 
-        <div ng-show='task.detail'>
+        <div>
           <span>created: {{task.date_assigned}}</span>
-          <br />
-          <span>assign task: </span>
-          <select ng-change="vm.assignTask(task)" ng-model="task.assigned_to" >
-            <!-- <option value ="{{vm.nullPointer}}" selected="{{vm.isAssignee(user, task)}}"> -->
-            <option ng-repeat="user in vm.users" value ="{{user.email}}" selected="{{vm.isAssignee(user, task)}}">
-              {{user.name}}
-            </option>
-          </select>
-          <span>set duedate:</span>
-          <input ui-date="{ changeYear: true, changeMonth: true, yearRange: '1900:-0' }"/>
+          <br>
+          <form>
+            <label>assign task:<br>
+              <select ng-change="vm.assignTask(task)" ng-model="task.assigned_to" >
+                <!-- <option value ="{{vm.nullPointer}}" selected="{{vm.isAssignee(user, task)}}"> -->
+                <option ng-repeat="user in vm.users" value ="{{user.email}}" selected="{{vm.isAssignee(user, task)}}">
+                  {{user.name}}
+                </option>
+              </select>
+            </label><br>
+            <span>set due-date:</span>
+            <input ng-change="vm.dueDate(task)" type="text" placeholder="due date" ui-date="vm.dateOptions" ng-model="task.date_due"/>
+          </form>
         </div>
       </li>
+      <li>
+        <button class="list-view-filter" ng-click="vm.filterByAll()">all</button>
+        <button class="list-view-filter" ng-click="vm.filterByNew()">new</button>
+        <button class="list-view-filter" ng-click="vm.filterByStarted()">begun</button>
+        <button class="list-view-filter" ng-click="vm.filterByDone()">done</button>
+      </li>
     </ul>
-
-    <button ng-click="vm.filterByAll()">all</button>
-    <button ng-click="vm.filterByNew()">new</button>
-    <button ng-click="vm.filterByStarted()">begun</button>
-    <button ng-click="vm.filterByDone()">done</button>
 
   </div>
 
