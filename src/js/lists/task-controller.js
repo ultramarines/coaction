@@ -31,6 +31,7 @@ app.config(['$routeProvider', function($routeProvider){
   self.users = users;
   self.newTask = Task();
   self.statusFilter = 'all';
+  self.nullPointer = null;
 
   self.addTask = function() {
     if (self.newTask.title === '') {
