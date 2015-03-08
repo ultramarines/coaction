@@ -6,8 +6,6 @@ from flask.ext.migrate import MigrateCommand
 from flask.ext.script.commands import ShowUrls, Clean
 
 from coaction import create_app, db
-from faker import Faker
-fake = Faker()
 
 
 app = create_app()

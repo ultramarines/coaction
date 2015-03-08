@@ -117,6 +117,10 @@ app.config(['$routeProvider', function($routeProvider){
     }
   };
 
+  self.dueDate = function() {
+
+  };
+
   self.filterByNew = function() {
     self.statusFilter = 'new';
   };
@@ -131,6 +135,13 @@ app.config(['$routeProvider', function($routeProvider){
 
   self.filterByAll = function() {
     self.statusFilter = 'all';
+  };
+
+
+  self.dateOptions = {
+    changeYear: true,
+    changeMonth: true,
+    dateFormat: "yy-mm-dd"
   };
 
 }]);

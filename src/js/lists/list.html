@@ -21,16 +21,18 @@
         <div>
           <span>created: {{task.date_assigned}}</span>
           <br>
-          <span>assign task: </span>
-          <select ng-change="vm.assignTask(task)" ng-model="task.assigned_to" >
-            <!-- <option value ="{{vm.nullPointer}}" selected="{{vm.isAssignee(user, task)}}"> -->
-            <option ng-repeat="user in vm.users" value ="{{user.email}}" selected="{{vm.isAssignee(user, task)}}">
-              {{user.name}}
-            </option>
-          </select>
-          <span>set duedate:</span>
-          <input ui-date type="text" ng-model="task.date_due">
-          <!-- <input ui-date="{ changeYear: true, changeMonth: true, yearRange: '1900:-0' }"/> -->
+          <form>
+            <label>assign task:<br>
+              <select ng-change="vm.assignTask(task)" ng-model="task.assigned_to" >
+                <!-- <option value ="{{vm.nullPointer}}" selected="{{vm.isAssignee(user, task)}}"> -->
+                <option ng-repeat="user in vm.users" value ="{{user.email}}" selected="{{vm.isAssignee(user, task)}}">
+                  {{user.name}}
+                </option>
+              </select>
+            </label><br>
+            <span>set due-date:</span>
+            <input ng-change="vm.dueDate(task)" type="text" placeholder="due date" ui-date="vm.dateOptions" ng-model="task.date_due"/>
+          </form>
         </div>
       </li>
       <li>
