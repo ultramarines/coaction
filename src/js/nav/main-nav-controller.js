@@ -10,6 +10,5 @@ app.controller('MainNavCtrl',
     if( self.location === '/') {
       self.hideLogo = true;
     }
-    console.log(self.hideLogo);
 
   }]);

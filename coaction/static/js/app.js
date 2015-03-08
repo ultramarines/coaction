@@ -11,40 +11,6 @@ app.config(['$routeProvider', function ($routeProvider) {
   });
 }]);
 
-app.factory('ajaxService', ['$log', function($log) {
-
-  return {
-    call: function(p) {
-      return p.then(function (result) {
-        return result.data;
-      })
-      .catch(function (error) {
-        $log.log(error);
-      });
-    }
-  };
-
-}]);
-
-app.filter('statusFilter', function() {
-  return function(input, status) {
-
-    var filteredInput = [];
-
-    if (status === 'all') {
-      return input;
-    }
-
-    input.forEach(function(item) {
-      if (item.status === status) {
-        filteredInput.push(item);
-      }
-    });
-
-    return filteredInput;
-  };
-});
-
 app.controller('Error404Ctrl', ['$location', function ($location) {
   this.message = 'Could not find: ' + $location.url();
 }]);
@@ -249,7 +215,6 @@ app.controller('MainNavCtrl',
     if( self.location === '/') {
       self.hideLogo = true;
     }
-    console.log(self.hideLogo);
 
   }]);
 
