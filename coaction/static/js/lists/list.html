@@ -15,8 +15,19 @@
       </li>
       <li ng-repeat="task in vm.tasks | statusFilter : vm.statusFilter">
         <input type="checkbox" class="task-complete ng-class: task.status;" ng-class="task.status" ng-click="vm.toggleTask(task)">
-        <span class="ng-class: task.status;">{{ task.title }}</span>
+        <span class="ng-class: task.status;" ng-click="vm.toggleDetail(task)">{{ task.title }}</span>
         <button class="task-delete" ng-click="vm.deleteTask(task)">X</button>
+
+        <div ng-show='task.detail'>
+          <span>created: {{task.date_assigned}}</span>
+          <br />
+          <span>assign task: </span>
+          <select ng-change="vm.assignTask(task)" ng-model="task.assigned_to" >
+            <option ng-repeat="user in vm.users" value ="{{user.email}}" selected="{{vm.isAssignee(user, task)}}">
+              {{user.name}}
+            </option>
+          </select>
+        </div>
       </li>
       <li>
         <button class="list-view-filter" ng-click="vm.filterByAll()">all</button>

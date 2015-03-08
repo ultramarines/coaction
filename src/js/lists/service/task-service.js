@@ -5,8 +5,11 @@ app.factory('tasksService', ['ajaxService', '$http', function(ajaxService, $http
     addTask: function(task) {
       return ajaxService.call($http.post('/api/tasks', task));
     },
-    list: function() {
+    taskList: function() {
       return ajaxService.call($http.get('api/tasks'));
+    },
+    userList: function() {
+      return ajaxService.call($http.get('api/users'));
     },
     deleteTask: function(task) {
       var url = '/api/tasks/' + task.id;
@@ -15,10 +18,14 @@ app.factory('tasksService', ['ajaxService', '$http', function(ajaxService, $http
     toggleTask: function(task) {
       var url = '/api/tasks/' + task.id;
       if (task.status === 'new' || task.status === 'started') {
-        return ajaxService.call($http.put(url, {status: 'done'}));
+        return ajaxService.call($http.put(url, { status: 'done' }));
       } else {
-        return ajaxService.call($http.put(url, {status: 'started'}));
+        return ajaxService.call($http.put(url, { status: 'started' }));
       }
+    },
+    assignTask: function(task) {
+      var url = '/api/task_assignment'
+      return ajaxService.call($http.post(url, task));
     }
   };
 

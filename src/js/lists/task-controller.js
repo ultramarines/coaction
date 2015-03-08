@@ -10,15 +10,24 @@ app.config(['$routeProvider', function($routeProvider){
           }).catch(function(err) {
             $log.log(err + ' -> tasks failed to load');
           });
-      }]
+      }],
+      users: ['tasksService', '$log', function(tasksService, $log) {
+          return tasksService.userList().then(function(result) {
+            $log.log(result.users);
+            return result.users;
+          }).catch(function(err) {
+            $log.log(err + ' -> users failed to load');
+          });
+      }],
     }
   };
 
   $routeProvider.when('/lists', routeDefinition);
 
-}]).controller('ListCtrl', ['tasksService', 'tasks', 'Task', function(tasksService, tasks, Task) {
+}]).controller('ListCtrl', ['tasksService', 'tasks', 'users', 'Task', function(tasksService, tasks, users, Task) {
   var self = this;
   self.tasks = tasks;
+  self.users = users;
   self.newTask = Task();
   self.statusFilter = 'all';
 
@@ -61,6 +70,32 @@ app.config(['$routeProvider', function($routeProvider){
       .catch(function(err) {
         alert('deletion failed');
       });
+  };
+
+  self.assignTask = function(task) {
+    tasksService.assignTask(task)
+      .then(function(result) {
+        console.log(result);
+      })
+      .catch(function(err) {
+        console.log(err);
+      });
+  };
+
+  self.toggleDetail = function(task) {
+    if (task.detail) {
+      task.detail = false;
+    } else {
+      task.detail = true;
+    }
+  };
+
+  self.isAssignee = function(user, task) {
+    if (user.email === task.assigned_to) {
+      return true;
+    } else {
+      return false;
+    }
   };
 
   self.filterByNew = function() {
