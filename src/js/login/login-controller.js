@@ -21,7 +21,7 @@ app.config(['$routeProvider', function($routeProvider){
     } else {
       self.userView = 'login';
     }
-  }
+  };
 
   self.login = function() {
     $log.log(self.newLogin);
