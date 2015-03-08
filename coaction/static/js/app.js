@@ -1,6 +1,6 @@
 // Declare our app module, and import the ngRoute and ngAnimate
 // modules into it.
-var app = angular.module('app', ['ngRoute']);
+var app = angular.module('app', ['ngRoute', 'ui.date']);
 
 // Set up our 404 handler
 app.config(['$routeProvider', function ($routeProvider) {
@@ -47,6 +47,7 @@ app.config(['$routeProvider', function($routeProvider){
   self.users = users;
   self.newTask = Task();
   self.statusFilter = 'all';
+  self.nullPointer = null;
 
   self.addTask = function() {
     if (self.newTask.title === '') {
@@ -212,7 +213,7 @@ app.config(['$routeProvider', function($routeProvider){
     } else {
       self.userView = 'login';
     }
-  }
+  };
 
   self.login = function() {
     $log.log(self.newLogin);
@@ -306,7 +307,7 @@ app.factory('tasksService', ['ajaxService', '$http', function(ajaxService, $http
       }
     },
     assignTask: function(task) {
-      var url = '/api/task_assignment'
+      var url = '/api/task_assignment';
       return ajaxService.call($http.post(url, task));
     }
   };

@@ -1,8 +1,8 @@
 from flask import Blueprint, request, jsonify
 from flask.ext.login import login_user, logout_user, login_required, current_user
 
-from .models import Task, User
-from .forms import TaskForm, RegistrationForm, LoginForm
+from .models import Task, User, Comment
+from .forms import TaskForm, RegistrationForm, LoginForm, CommentForm
 from .extensions import db, login_manager
 import json
 from datetime import date, datetime
@@ -81,6 +81,36 @@ def delete_task(id):
     else:
         return jsonify({"ERROR": "task not found"}), 406
 
+
+@coaction.route("/api/tasks/<int:id>/comments", methods=["GET"])
+@login_required
+def get_comments(id):
+    comments = Comment.query.filter_by(task_id = id).all()
+    comments = [comment.to_dict() for comment in comments]
+    return jsonify({"comments": comments}), 201
+
+
+@coaction.route("/api/tasks/<int:id>/comments", methods = ["POST"])
+@login_required
+def make_comment(id):
+    body = request.get_data(as_text=True)
+    data = json.loads(body)
+    #  Enter Required data into Form
+    form = CommentForm(comment=data['comment'],
+                       task_id = id,
+                       formdata=None, csrf_enabled=False)
+
+    if form.validate():
+            comment = Comment(task_id = id, comment = form.comment.data)
+            db.session.add(comment)
+            db.session.commit()
+            comment = comment.to_dict()
+
+            return (jsonify({ 'comment': comment }), 201)
+
+    else:
+        return form.errors, 400
+
 @coaction.route("/api/task_assignment", methods=["GET"])
 @login_required
 def view_task_assignments():
@@ -89,71 +119,17 @@ def view_task_assignments():
     tasks = [task.to_dict() for task in tasks]
     return jsonify({"tasks": tasks}), 201
 
-@coaction.route("/api/task_assignment", methods=["POST"])
-@login_required
-def assign_task():
-    body = request.get_data(as_text=True)
-    data = json.loads(body)
-    #  Enter Required data into Form
-    form = TaskForm(title=data['title'],
-                    assigned_to = data["assigned_to"],
-                    status="new",
-                    index="0",
-                    formdata=None, csrf_enabled=False)
-    # Enter Optional data into Form
-    if 'description' in data:
-        form.description.data = data['description']
-    if 'date_due' in data:
-        form.date_due.data = data['date_due']
-
-    # Validate Form
-    if form.validate():
-        #get the user of assignee
-        assigned_to = form.assigned_to.data
-        print("assigned to: ", assigned_to)
-
-
-        assigned_to = User.query.filter_by(email = assigned_to).first()
-        print(assigned_to)
-        #check if task has already been assigned
-        duplicate = Task.query.filter_by(user_id = assigned_to.id, title = form.title.data).first()
-        if not duplicate:
-            task = Task(title=form.title.data,
-                        status=form.status.data,
-                        user_id = assigned_to.id,
-                        project_id = 0,
-                        date_assigned=date.today(),
-                        index=form.index.data,
-                        assigned_by = current_user.email,
-                        assigned_to  = assigned_to.name)
-            # Enter Optional Data Into Model
-            if form.description.data:
-                task.description = form.description.data
-            if form.date_due.data:
-                data_date = datetime.strptime(data['date_due'], "%Y-%m-%d")
-                task.date_due = data_date
-            db.session.add(task)
-            db.session.commit()
-            task = task.to_dict()
-
-            return (jsonify({ 'task': task }), 201)
-
-        else:
-            return jsonify({"ERROR": "duplicate task"}), 406
-    else:
-        return form.errors, 400
 
 
 @coaction.route("/api/tasks/<int:id>", methods=['PUT'])
 @login_required
-def update_activity(id):
+def update_task(id):
     # user = require_authorization()
     input_check = False
     body = request.get_data(as_text=True)
     data = json.loads(body)
     keys = data.keys()
     task = Task.query.filter_by(id=id).first()
-    print("Before length")
     if len(keys) < 6:
         if 'title' in keys:
             task.title = data['title']
@@ -170,8 +146,11 @@ def update_activity(id):
                 input_check = True
             else:
                 return jsonify({"ERROR": "Invalid Data Input"}), 401
-        if 'user_id' in keys:
-            task.user_id = data['user_id']
+        if 'assigned_to' in keys:
+            assigned_to = User.query.filter_by(email = data["assigned_to"]).first()
+            task.user_id = assigned_to.id
+            task.assigned_to = assigned_to.email
+            task.assigned_by = current_user.email
             input_check = True
         if 'date_assigned' in keys:
             data_date = datetime.strptime(data['date_assigned'], "%Y-%m-%d")
@@ -182,14 +161,11 @@ def update_activity(id):
             task.date_due = data_date
             input_check = True
         if input_check:
-            print("Commit")
             db.session.commit()
-            print("task")
             return jsonify({'task': task.to_dict() }), 201
         else:
             return jsonify({"ERROR": "Invalid Data Input"}), 401
     else:
-        print("error")
         return jsonify({"ERROR": "Too Many Input Variables"}), 401
 
 @coaction.route("/api/login", methods=['POST'])
@@ -202,7 +178,6 @@ def login():
     if form.validate() and not current_user.is_authenticated():
         user = User.query.filter_by(email=form.email.data).first()
         if user and user.check_password(form.password.data):
-            print(type(user))
             login_user(user)
             return jsonify({'user': user.to_dict()}), 201
         else:
