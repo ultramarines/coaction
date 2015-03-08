@@ -1,16 +1,40 @@
-<div>
-  <span>login</span>
-  <form ng-submit="vm.login()">
-    <input type="text" ng-model="vm.newLogin.email" placeholder="email">
-    <input type="password" ng-model="vm.newLogin.password" placeholder="password">
-    <button>login</button>
-  </form>
-  <span>signup</span>
-  <form ng-submit="vm.signup()">
-    <input type="text" ng-model="vm.newSignup.name" placeholder="name">
-    <input type="text" ng-model="vm.newSignup.email" placeholder="email">
-    <input type="password" ng-model="vm.newSignup.password" placeholder="password">
-    <!-- <input type="password" placeholder="confirm password"> -->
-    <button>signup</button>
-  </form>
+<div class="home-page-content">
+  <img class="home-page-logo" src="/static/img/cospirelight.svg" alt="COSPIRE" />
+  <h1 style="display: none">task management for teams</h1>
+  <h2 class="home-page-tagline">see tasks as a team</h2>
+  <div class="login-content">
+    <div ng-show="vm.userView === 'login'" class="login-form home-page-form">
+      <form ng-submit="vm.login()">
+        <label>email<br>
+          <input class="login-input" type="text" ng-model="vm.newLogin.email" placeholder="email">
+        </label>
+        <label>password<br>
+          <input class="login-input" type="password" ng-model="vm.newLogin.password" placeholder="password">
+        </label>
+        <button style="display: none">login</button>
+      </form>
+      <button class="form-submit" ng-click="vm.login()">login</button>
+    </div>
+    <div ng-hide="vm.userView === 'login'" class="signup-form home-page-form">
+      <form ng-submit="vm.signup()">
+        <label>name<br>
+          <input class="login-input" type="text" ng-model="vm.newSignup.name" placeholder="name">
+        </label>
+        <label>email<br>
+          <input class="login-input" type="text" ng-model="vm.newSignup.email" placeholder="email">
+        </label>
+        <label>password<br>
+          <input class="login-input" type="password" ng-model="vm.newSignup.password" placeholder="password">
+        </label>
+        <!-- <input type="password" placeholder="confirm password"> -->
+        <button style="display: none">signup</button>
+      </form>
+      <button class="form-submit" ng-click="vm.signup()">signup</button>
+    </div>
+  </div>
+  <p ng-show="vm.userView === 'login'" class="home-page-options"><a ng-click="vm.toggleView()">need an account?</a>
+  </p>
+  <p ng-hide="vm.userView === 'login'"class="home-page-options"><a ng-click="vm.toggleView()">already have an account?</a>
+  </p>
+  <h4 class="page-description login-page-description">See tasks together as a team. Sign up to find a new way of collaboration that is simple and easy to approach. Share todo’s, new tasks, go get-em’s or whatever you want to call them…  we’ve got you handled.</h4>
 </div>

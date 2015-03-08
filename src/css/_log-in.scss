@@ -1,0 +1,78 @@
+/*                                  *\
+  ---  LOGIN PAGE  ---
+  most likely the home page
+
+\*                                   */
+.home-page-content,
+.login-content {
+  max-width: 25em;
+  margin: 0 auto;
+}
+
+.login-content {
+  padding: 2em;
+  background-color: $accent-color;
+  color: $dull;
+  border-radius: 1em;
+  box-shadow: 5px 5px 40px $dark;
+  label {
+    display: block;
+  }
+}
+.login-form {
+
+}
+
+.signup-form {
+
+}
+
+.form-submit {
+  background-color: $dull;
+  color: $dark;
+  cursor: pointer;
+}
+
+.login-input {
+  padding: .5em;
+  width: 100%;
+  margin: .5em 0;
+  border: none;
+  background-color: $dark;
+  color: $dull;
+  &:focus {
+    outline: none;
+  }
+}
+
+
+.page-description {
+}
+
+.login-page-description {
+  color: $dull;
+  margin-top: 2em;
+  text-align: left;
+}
+
+.home-page-tagline {
+  margin-top: 0;
+  text-align: center;
+  font-size: 2em;
+  letter-spacing: .2em;
+  color: $dull;
+}
+
+.home-page-logo {
+  width: 100%;
+  max-width: 25em;
+}
+
+.home-page-options {
+  padding: .2em 1em;
+  text-align: right;
+  cursor: pointer;
+  a{
+    color: darken($dull, 15%);
+  }
+}

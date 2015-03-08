@@ -1,14 +1,10 @@
 body {
   font-family: sans-serif;
   line-height: 1.4em;
-  background-color: $bg-color;
-  background-image: linear-gradient(0deg, $bg-color, #fff);
+  // background-color: $bg-color;
+  background-image: linear-gradient(90deg, $dark, $darkbgray, $dark);
   color: $fg-color;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  background-size: contain;
 
 }
 

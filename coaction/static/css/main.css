@@ -39,14 +39,9 @@ html {
 body {
   font-family: sans-serif;
   line-height: 1.4em;
-  background-color: #1C1D21;
-  background-image: linear-gradient(0deg, #1C1D21, #fff);
+  background-image: linear-gradient(90deg, #1C1D21, #31353D, #1C1D21);
   color: #444;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0; }
+  background-size: contain; }
 
 h1 {
   font-size: 2em;
@@ -125,9 +120,6 @@ h2 {
   padding: 1em;
   margin-bottom: 1.5em; }
 
-.main-nav {
-  padding: 0 2em; }
-
 h1.page-title {
   display: none; }
 
@@ -151,6 +143,10 @@ h1.page-title {
 
 .main-nav-link.active {
   background: #4d5196; }
+
+.page-description {
+  font-weight: 100;
+  font-size: 1.2em; }
 
 .lists-content {
   color: #EEEFF7;
@@ -186,15 +182,13 @@ h1.page-title {
   background-color: transparent; }
 
 .main-nav-logo {
-  height: 2      em;
+  height: 3.5em;
   vertical-align: middle; }
 
 .main-nav {
   background-color: #EEEFF7;
-  text-align: center; }
-
-.main-nav-logo {
-  height: 3em; }
+  text-align: center;
+  padding: 1em; }
 
 .main-nav-link {
   position: relative; }
@@ -205,3 +199,59 @@ h1.page-title {
     padding: 1em;
     background-color: #EEEFF7;
     display: inline-block; }
+
+/*                                  *\
+  ---  LOGIN PAGE  ---
+  most likely the home page
+
+\*                                   */
+.home-page-content, .login-content {
+  max-width: 25em;
+  margin: 0 auto; }
+
+.login-content {
+  padding: 2em;
+  background-color: #92CDCF;
+  color: #EEEFF7;
+  border-radius: 1em;
+  box-shadow: 5px 5px 40px #1C1D21; }
+  .login-content label {
+    display: block; }
+
+.form-submit {
+  background-color: #EEEFF7;
+  color: #1C1D21;
+  cursor: pointer; }
+
+.login-input {
+  padding: .5em;
+  width: 100%;
+  margin: .5em 0;
+  border: none;
+  background-color: #1C1D21;
+  color: #EEEFF7; }
+  .login-input:focus {
+    outline: none; }
+
+.login-page-description {
+  color: #EEEFF7;
+  margin-top: 2em;
+  text-align: left; }
+
+.home-page-tagline {
+  margin-top: 0;
+  text-align: center;
+  font-size: 2em;
+  letter-spacing: .2em;
+  color: #EEEFF7; }
+
+.home-page-logo {
+  width: 100%;
+  max-width: 25em; }
+
+.home-page-options {
+  padding: .2em 1em;
+  text-align: right;
+  cursor: pointer; }
+  .home-page-options a {
+    color: #babedf; }
