@@ -18,12 +18,14 @@
         <span class="ng-class: task.status;">{{ task.title }}</span>
         <button class="task-delete" ng-click="vm.deleteTask(task)">X</button>
       </li>
+      <li>
+        <button class="list-view-filter" ng-click="vm.filterByAll()">all</button>
+        <button class="list-view-filter" ng-click="vm.filterByNew()">new</button>
+        <button class="list-view-filter" ng-click="vm.filterByStarted()">begun</button>
+        <button class="list-view-filter" ng-click="vm.filterByDone()">done</button>
+      </li>
     </ul>
 
-    <button ng-click="vm.filterByAll()">all</button>
-    <button ng-click="vm.filterByNew()">new</button>
-    <button ng-click="vm.filterByStarted()">begun</button>
-    <button ng-click="vm.filterByDone()">done</button>
   </div>
 
 

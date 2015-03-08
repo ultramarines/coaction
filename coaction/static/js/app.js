@@ -23,7 +23,6 @@ app.config(['$routeProvider', function($routeProvider){
     resolve: {
       tasks: ['tasksService', '$log', function(tasksService, $log) {
           return tasksService.list().then(function(result) {
-            $log.log(result);
             return result.tasks;
           }).catch(function(err) {
             $log.log(err + ' -> tasks failed to load');
@@ -209,12 +208,6 @@ app.controller('MainNavCtrl',
     var self = this;
 
     self.current = current;
-
-    self.location = $location.url();
-
-    if( self.location === '/') {
-      self.hideLogo = true;
-    }
 
   }]);
 

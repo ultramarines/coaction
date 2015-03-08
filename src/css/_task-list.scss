@@ -42,3 +42,15 @@
   color: $primary-text;
   background-color: transparent;
 }
+
+.list-view-filter {
+  display: inline-block;
+  background-color: transparent;
+  color: $dark;
+  border-radius: .2em;
+  border: 1px solid lighten($dark, 30%);
+  padding: .2em;
+  &:hover {
+    background-color: #ddd;
+  }
+}
