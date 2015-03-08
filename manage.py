@@ -6,6 +6,8 @@ from flask.ext.migrate import MigrateCommand
 from flask.ext.script.commands import ShowUrls, Clean
 
 from coaction import create_app, db
+from faker import Faker
+fake = Faker()
 
 
 app = create_app()
@@ -27,9 +29,10 @@ def make_shell_context():
 
 @manager.command
 def createdb():
-    """Creates the database with all model tables. 
+    """Creates the database with all model tables.
     Migrations are preferred."""
     db.create_all()
+
 
 
 if __name__ == '__main__':
