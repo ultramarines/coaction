@@ -20,18 +20,6 @@
 
         <div>
           <span>created: {{task.date_assigned}}</span>
-<<<<<<< HEAD
-          <br />
-          <span>assign task: </span>
-          <select ng-change="vm.assignTask(task)" ng-model="task.assigned_to" >
-            <!-- <option value ="{{vm.nullPointer}}" selected="{{vm.isAssignee(user, task)}}"> -->
-            <option ng-repeat="user in vm.users" value ="{{user.email}}" selected="{{vm.isAssignee(user, task)}}">
-              {{user.name}}
-            </option>
-          </select>
-          <span>set duedate:</span>
-          <input ui-date="{ changeYear: true, changeMonth: true, yearRange: '1900:-0' }"/>
-=======
           <br>
           <form ng-submit-"vm.addTask()">
             <label>
@@ -45,7 +33,6 @@
               </option>
             </select>
           </label>
->>>>>>> datepicker
         </div>
       </li>
       <li>
