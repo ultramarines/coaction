@@ -6,7 +6,6 @@ app.config(['$routeProvider', function($routeProvider){
     resolve: {
       tasks: ['tasksService', '$log', function(tasksService, $log) {
           return tasksService.taskList().then(function(result) {
-            console.log(result);
             return result.tasks;
           }).catch(function(err) {
             $log.log(err + ' -> tasks failed to load');
@@ -14,7 +13,6 @@ app.config(['$routeProvider', function($routeProvider){
       }],
       users: ['tasksService', '$log', function(tasksService, $log) {
           return tasksService.userList().then(function(result) {
-            $log.log(result.users);
             return result.users;
           }).catch(function(err) {
             $log.log(err + ' -> users failed to load');
@@ -100,8 +98,10 @@ app.config(['$routeProvider', function($routeProvider){
     }
   };
 
-  self.dueDate = function() {
-
+  self.updateTask = function(task, field) {
+    tasksService.updateTask(task, field).then(function(data){
+      console.log(data);
+    });
   };
 
   self.filterByNew = function() {
