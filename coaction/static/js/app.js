@@ -144,6 +144,15 @@ app.factory('Task', function() {
   };
 });
 
+app.controller('MainNavCtrl',
+  ['$log', 'current', '$location', function($log, current, $location) {
+
+    var self = this;
+
+    self.current = current;
+
+  }]);
+
 app.factory('current', ['ajaxService', '$location', '$http', '$log', function(ajaxService, $location, $http, $log) {
   var self = this;
   self.user = {};
@@ -237,15 +246,6 @@ app.factory('User', function() {
     };
   };
 });
-
-app.controller('MainNavCtrl',
-  ['$log', 'current', '$location', function($log, current, $location) {
-
-    var self = this;
-
-    self.current = current;
-
-  }]);
 
 app.factory('ajaxService', ['$log', function($log) {
 
