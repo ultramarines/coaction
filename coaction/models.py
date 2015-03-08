@@ -59,3 +59,14 @@ class User(db.Model, UserMixin):
     def load_user(id):
         print("Check if load user happens")
         return User.query.get(id)
+
+
+class Comment(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    task_id = db.Column(db.Integer, nullable=False, default=0)
+    comment = db.Column(db.String(255), nullable=False)
+
+    def to_dict(self):
+        return {"id": self.id,
+                "task_id": self.task_id,
+                "comment": self.comment}

@@ -22,3 +22,6 @@ class RegistrationForm(Form):
 class LoginForm(Form):
     email = EmailField(validators=[DataRequired(), Email()])
     password = PasswordField(validators=[DataRequired()])
+
+class CommentForm(Form):
+    comment = StringField(validators=[DataRequired()])
