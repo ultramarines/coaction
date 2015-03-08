@@ -145,6 +145,21 @@ app.factory('Task', function() {
   };
 });
 
+app.controller('MainNavCtrl',
+  ['$log', 'current', '$location', function($log, current, $location) {
+
+    var self = this;
+
+    self.current = current;
+
+    self.location = $location.url();
+
+    if( self.location === '/') {
+      self.hideLogo = true;
+    }
+
+  }]);
+
 app.factory('current', ['ajaxService', '$location', '$http', '$log', function(ajaxService, $location, $http, $log) {
   var self = this;
   self.user = {};
@@ -273,21 +288,6 @@ app.filter('statusFilter', function() {
   };
 });
 
-app.controller('MainNavCtrl',
-  ['$log', 'current', '$location', function($log, current, $location) {
-
-    var self = this;
-
-    self.current = current;
-
-    self.location = $location.url();
-
-    if( self.location === '/') {
-      self.hideLogo = true;
-    }
-
-  }]);
-
 app.factory('tasksService', ['ajaxService', '$http', function(ajaxService, $http) {
 
   return {
@@ -314,8 +314,8 @@ app.factory('tasksService', ['ajaxService', '$http', function(ajaxService, $http
       }
     },
     assignTask: function(task) {
-      var url = '/api/task_assignment';
-      return ajaxService.call($http.post(url, task));
+      var url = '/api/tasks/' + task.id;
+      return ajaxService.call($http.put(url, { assigned_to: task.assigned_to }));
     }
   };
 
