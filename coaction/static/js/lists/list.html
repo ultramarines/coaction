@@ -18,8 +18,9 @@
         <span class="ng-class: task.status;" ng-click="vm.toggleDetail(task)">{{ task.title }}</span>
         <button class="task-delete" ng-click="vm.deleteTask(task)">X</button>
 
-        <div ng-show='task.detail'>
+        <div>
           <span>created: {{task.date_assigned}}</span>
+<<<<<<< HEAD
           <br />
           <span>assign task: </span>
           <select ng-change="vm.assignTask(task)" ng-model="task.assigned_to" >
@@ -30,6 +31,21 @@
           </select>
           <span>set duedate:</span>
           <input ui-date="{ changeYear: true, changeMonth: true, yearRange: '1900:-0' }"/>
+=======
+          <br>
+          <form ng-submit-"vm.addTask()">
+            <label>
+              <input ui-date type="text" ng-model="task.date_due">
+            </label>
+          </form>
+          <label>assign task:
+            <select ng-change="vm.assignTask(task)" ng-model="task.assigned_to" >
+              <option ng-repeat="user in vm.users" value ="{{user.email}}" selected="{{vm.isAssignee(user, task)}}">
+                {{user.name}}
+              </option>
+            </select>
+          </label>
+>>>>>>> datepicker
         </div>
       </li>
       <li>
