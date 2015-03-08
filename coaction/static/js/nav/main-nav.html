@@ -1,6 +1,6 @@
 <nav class="main-nav" ng-controller="MainNavCtrl as vm">
   <a href="#/">
-    <img class="main-nav-logo" src="/static/img/cospiredarker.svg" alt="COSPIRE" />
+    <img ng-if="!vm.hideLogo" class="main-nav-logo" src="/static/img/cospiredarker.svg" alt="COSPIRE" />
   </a>
   <button ng-show="vm.current.user.id" class="main-nav-link" ng-click="vm.current.logout()">logout</button>
 

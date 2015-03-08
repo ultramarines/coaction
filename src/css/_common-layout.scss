@@ -8,10 +8,6 @@
   margin-bottom: 1.5em;
 }
 
-.main-nav {
-  padding: 0 2em;
-}
-
 h1.page-title {
   display: none;
 }
@@ -38,4 +34,9 @@ h1.page-title {
 
 .main-nav-link.active {
   background: #4d5196;
+}
+
+.page-description {
+  font-weight: 100;
+  font-size: 1.2em;
 }
