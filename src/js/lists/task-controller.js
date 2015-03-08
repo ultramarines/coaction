@@ -5,7 +5,8 @@ app.config(['$routeProvider', function($routeProvider){
     controllerAs: 'vm',
     resolve: {
       tasks: ['tasksService', '$log', function(tasksService, $log) {
-          return tasksService.list().then(function(result) {
+          return tasksService.taskList().then(function(result) {
+            console.log(result);
             return result.tasks;
           }).catch(function(err) {
             $log.log(err + ' -> tasks failed to load');

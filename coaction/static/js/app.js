@@ -1,6 +1,6 @@
 // Declare our app module, and import the ngRoute and ngAnimate
 // modules into it.
-var app = angular.module('app', ['ngRoute']);
+var app = angular.module('app', ['ngRoute', 'ui.date']);
 
 // Set up our 404 handler
 app.config(['$routeProvider', function ($routeProvider) {
@@ -22,7 +22,8 @@ app.config(['$routeProvider', function($routeProvider){
     controllerAs: 'vm',
     resolve: {
       tasks: ['tasksService', '$log', function(tasksService, $log) {
-          return tasksService.list().then(function(result) {
+          return tasksService.taskList().then(function(result) {
+            console.log(result);
             return result.tasks;
           }).catch(function(err) {
             $log.log(err + ' -> tasks failed to load');
