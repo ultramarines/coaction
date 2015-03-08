@@ -239,21 +239,6 @@ app.factory('User', function() {
   };
 });
 
-app.controller('MainNavCtrl',
-  ['$log', 'current', '$location', function($log, current, $location) {
-
-    var self = this;
-
-    self.current = current;
-
-    self.location = $location.url();
-
-    if( self.location === '/') {
-      self.hideLogo = true;
-    }
-
-  }]);
-
 app.factory('ajaxService', ['$log', function($log) {
 
   return {
@@ -287,6 +272,21 @@ app.filter('statusFilter', function() {
     return filteredInput;
   };
 });
+
+app.controller('MainNavCtrl',
+  ['$log', 'current', '$location', function($log, current, $location) {
+
+    var self = this;
+
+    self.current = current;
+
+    self.location = $location.url();
+
+    if( self.location === '/') {
+      self.hideLogo = true;
+    }
+
+  }]);
 
 app.factory('tasksService', ['ajaxService', '$http', function(ajaxService, $http) {
 
