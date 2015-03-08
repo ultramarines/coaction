@@ -205,6 +205,16 @@ app.config(['$routeProvider', function($routeProvider){
   self.newSignup = User();
   self.current = current;
 
+  self.userView = 'login';
+
+  self.toggleView = function() {
+    if(self.userView === 'login') {
+      self.userView = 'signup';
+    } else {
+      self.userView = 'login';
+    }
+  }
+
   self.login = function() {
     $log.log(self.newLogin);
     self.current.login(self.newLogin);
@@ -227,6 +237,21 @@ app.factory('User', function() {
     };
   };
 });
+
+app.controller('MainNavCtrl',
+  ['$log', 'current', '$location', function($log, current, $location) {
+
+    var self = this;
+
+    self.current = current;
+
+    self.location = $location.url();
+
+    if( self.location === '/') {
+      self.hideLogo = true;
+    }
+
+  }]);
 
 app.factory('ajaxService', ['$log', function($log) {
 
@@ -261,15 +286,6 @@ app.filter('statusFilter', function() {
     return filteredInput;
   };
 });
-
-app.controller('MainNavCtrl',
-  ['$log', 'current', function($log, current) {
-
-    var self = this;
-
-    self.current = current;
-
-  }]);
 
 app.factory('tasksService', ['ajaxService', '$http', function(ajaxService, $http) {
 
