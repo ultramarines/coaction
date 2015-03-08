@@ -22,21 +22,30 @@ app.config(['$routeProvider', function($routeProvider){
     controllerAs: 'vm',
     resolve: {
       tasks: ['tasksService', '$log', function(tasksService, $log) {
-          return tasksService.list().then(function(result) {
+          return tasksService.taskList().then(function(result) {
             $log.log(result);
             return result.tasks;
           }).catch(function(err) {
             $log.log(err + ' -> tasks failed to load');
           });
-      }]
+      }],
+      users: ['tasksService', '$log', function(tasksService, $log) {
+          return tasksService.userList().then(function(result) {
+            $log.log(result.users);
+            return result.users;
+          }).catch(function(err) {
+            $log.log(err + ' -> users failed to load');
+          });
+      }],
     }
   };
 
   $routeProvider.when('/lists', routeDefinition);
 
-}]).controller('ListCtrl', ['tasksService', 'tasks', 'Task', function(tasksService, tasks, Task) {
+}]).controller('ListCtrl', ['tasksService', 'tasks', 'users', 'Task', function(tasksService, tasks, users, Task) {
   var self = this;
   self.tasks = tasks;
+  self.users = users;
   self.newTask = Task();
   self.statusFilter = 'all';
 
@@ -79,6 +88,32 @@ app.config(['$routeProvider', function($routeProvider){
       .catch(function(err) {
         alert('deletion failed');
       });
+  };
+
+  self.assignTask = function(task) {
+    tasksService.assignTask(task)
+      .then(function(result) {
+        console.log(result);
+      })
+      .catch(function(err) {
+        console.log(err);
+      });
+  };
+
+  self.toggleDetail = function(task) {
+    if (task.detail) {
+      task.detail = false;
+    } else {
+      task.detail = true;
+    }
+  };
+
+  self.isAssignee = function(user, task) {
+    if (user.email === task.assigned_to) {
+      return true;
+    } else {
+      return false;
+    }
   };
 
   self.filterByNew = function() {
@@ -259,8 +294,11 @@ app.factory('tasksService', ['ajaxService', '$http', function(ajaxService, $http
     addTask: function(task) {
       return ajaxService.call($http.post('/api/tasks', task));
     },
-    list: function() {
+    taskList: function() {
       return ajaxService.call($http.get('api/tasks'));
+    },
+    userList: function() {
+      return ajaxService.call($http.get('api/users'));
     },
     deleteTask: function(task) {
       var url = '/api/tasks/' + task.id;
@@ -269,10 +307,14 @@ app.factory('tasksService', ['ajaxService', '$http', function(ajaxService, $http
     toggleTask: function(task) {
       var url = '/api/tasks/' + task.id;
       if (task.status === 'new' || task.status === 'started') {
-        return ajaxService.call($http.put(url, {status: 'done'}));
+        return ajaxService.call($http.put(url, { status: 'done' }));
       } else {
-        return ajaxService.call($http.put(url, {status: 'started'}));
+        return ajaxService.call($http.put(url, { status: 'started' }));
       }
+    },
+    assignTask: function(task) {
+      var url = '/api/task_assignment'
+      return ajaxService.call($http.post(url, task));
     }
   };
 
