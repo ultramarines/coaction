@@ -120,6 +120,11 @@ app.config(['$routeProvider', function($routeProvider){
     self.statusFilter = 'all';
   };
 
+  self.updateDate = function(task) {
+    tasksService.updateTask(task, 'date_due').then(function(data){
+      // console.log(data);
+    });
+  };
 
   self.dateOptions = {
     changeYear: true,

@@ -128,6 +128,7 @@ def update_task(id):
     input_check = False
     body = request.get_data(as_text=True)
     data = json.loads(body)
+    print("\n\n\nData:  ",data)
     keys = data.keys()
     task = Task.query.filter_by(id=id).first()
     if len(keys) < 6:

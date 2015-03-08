@@ -137,6 +137,11 @@ app.config(['$routeProvider', function($routeProvider){
     self.statusFilter = 'all';
   };
 
+  self.updateDate = function(task) {
+    tasksService.updateTask(task, 'date_due').then(function(data){
+      // console.log(data);
+    });
+  };
 
   self.dateOptions = {
     changeYear: true,
@@ -325,10 +330,6 @@ app.factory('tasksService', ['ajaxService', '$http', function(ajaxService, $http
     updateTask: function(task, field) {
       var url = '/api/tasks/' + task.id;
       var update = {};
-      update[field] = task[field];
-      console.log(task);
-      update = JSON.stringify(update);
-      console.log(update);
       return ajaxService.call($http.put(url, update));
     }
   };

@@ -30,9 +30,7 @@
               </select>
             </label><br>
             <span>set due-date:</span>
-            <input ng-change="vm.updateTask(task, 'date_due')" type="text" placeholder="due date" ui-date="vm.dateOptions" ng-model="task.date_due"/>
-            <input ng-change="vm.updateTask(task, 'date_due')" type="text" ng-model="task.date_due"/>
-
+            <input ng-change="vm.updateDate(task)" type="text" placeholder="due date" ui-date="vm.dateOptions" ng-model="task.date_due"/>
           </form>
         </div>
       </li>
