@@ -26,9 +26,6 @@ app.config(['$routeProvider', function($routeProvider){
 }]).controller('ListCtrl', ['tasksService', 'tasks', 'users', 'Task', '$log', function(tasksService, tasks, users, Task, $log) {
   var self = this;
   self.tasks = tasks;
-  // self.tasks.forEach(function(item) {
-  //   item.date_due = new Date(item.date_due);
-  // });
   self.users = users;
   self.newTask = Task();
   self.statusFilter = 'all';
@@ -129,11 +126,8 @@ app.config(['$routeProvider', function($routeProvider){
 
   self.updateDate = function(task) {
     self.toggleSettingDate(task);
-    console.log(task.date_due);
     var myDate = new Date(task.date_due);
-    console.log(myDate);
     task.date_due = myDate.toISOString().slice(0, 10);
-    console.log(task.date_due);
     tasksService.updateTask(task, 'date_due').then(function(data){
       $log.log(data);
     });
