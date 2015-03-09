@@ -129,11 +129,8 @@ app.config(['$routeProvider', function($routeProvider){
 
   self.updateDate = function(task) {
     self.toggleSettingDate(task);
-    console.log(task.date_due);
     var myDate = new Date(task.date_due);
-    console.log(myDate);
     task.date_due = myDate.toISOString().slice(0, 10);
-    console.log(task.date_due);
     tasksService.updateTask(task, 'date_due').then(function(data){
       $log.log(data);
     });
@@ -145,7 +142,7 @@ app.config(['$routeProvider', function($routeProvider){
     } else {
       task.settingDate = true;
     }
-  }
+  };
 
   self.dateOptions = {
     changeYear: true,

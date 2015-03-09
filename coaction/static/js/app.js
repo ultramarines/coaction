@@ -15,101 +15,6 @@ app.controller('Error404Ctrl', ['$location', function ($location) {
   this.message = 'Could not find: ' + $location.url();
 }]);
 
-app.factory('current', ['ajaxService', '$location', '$http', '$log', function(ajaxService, $location, $http, $log) {
-  var self = this;
-  self.user = {};
-
-  ajaxService.call($http.get('/api/me'))
-    .then(function(result) {
-      self.user = result.user;
-      console.log(self.user.id);
-      $location.path('/lists');
-    }).catch(function(err){
-      $location.path('/');
-    });
-
-  self.login = function(user) {
-    $log.log(user);
-    ajaxService.call($http.post('/api/login', user))
-      .then(function(result) {
-        self.user = result.user;
-        $location.path('/lists');
-      });
-  };
-
-  self.logout = function() {
-    ajaxService.call($http.get('/api/logout'))
-      .then(function(result) {
-        $log.log(result);
-        self.user = {};
-        $location.path('/');
-      });
-  };
-
-  self.signup = function(user) {
-    $log.log(user);
-    ajaxService.call($http.post('/api/register', user))
-      .then(function(result) {
-        self.user = result.user;
-        $log.log(result);
-        $location.path('/lists');
-      });
-  };
-
-  return self;
-
-  //TODO: make this a thing
-}]);
-
-app.config(['$routeProvider', function($routeProvider){
-  var routeDefinition = {
-    templateUrl: 'static/js/login/login.html',
-    controller: 'LoginCtrl',
-    controllerAs: 'vm',
-  };
-
-  $routeProvider.when('/', routeDefinition);
-
-}]).controller('LoginCtrl', ['$log', '$location', 'current', 'User', function($log, $location, current, User) {
-  var self = this;
-  self.newLogin = User();
-  self.newSignup = User();
-  self.current = current;
-
-  self.userView = 'login';
-
-  self.toggleView = function() {
-    if(self.userView === 'login') {
-      self.userView = 'signup';
-    } else {
-      self.userView = 'login';
-    }
-  };
-
-  self.login = function() {
-    $log.log(self.newLogin);
-    self.current.login(self.newLogin);
-    self.newLogin = User();
-  };
-
-  self.signup = function() {
-    self.current.signup(self.newSignup);
-    self.newSignup = User();
-  };
-}]);
-
-app.factory('User', function() {
-  return function (spec) {
-    spec = spec || {};
-    return {
-      name: spec.name,
-      email: spec.email,
-      password: spec.password,
-      assigned_to: []
-    };
-  };
-});
-
 app.config(['$routeProvider', function($routeProvider){
   var routeDefinition = {
     templateUrl: 'static/js/lists/list.html',
@@ -241,11 +146,8 @@ app.config(['$routeProvider', function($routeProvider){
 
   self.updateDate = function(task) {
     self.toggleSettingDate(task);
-    console.log(task.date_due);
     var myDate = new Date(task.date_due);
-    console.log(myDate);
     task.date_due = myDate.toISOString().slice(0, 10);
-    console.log(task.date_due);
     tasksService.updateTask(task, 'date_due').then(function(data){
       $log.log(data);
     });
@@ -257,7 +159,7 @@ app.config(['$routeProvider', function($routeProvider){
     } else {
       task.settingDate = true;
     }
-  }
+  };
 
   self.dateOptions = {
     changeYear: true,
@@ -275,6 +177,101 @@ app.factory('Task', function() {
       title: spec.title || '',
       status: 'new',
       date_due: date.toISOString().slice(0, 10)
+    };
+  };
+});
+
+app.factory('current', ['ajaxService', '$location', '$http', '$log', function(ajaxService, $location, $http, $log) {
+  var self = this;
+  self.user = {};
+
+  ajaxService.call($http.get('/api/me'))
+    .then(function(result) {
+      self.user = result.user;
+      console.log(self.user.id);
+      $location.path('/lists');
+    }).catch(function(err){
+      $location.path('/');
+    });
+
+  self.login = function(user) {
+    $log.log(user);
+    ajaxService.call($http.post('/api/login', user))
+      .then(function(result) {
+        self.user = result.user;
+        $location.path('/lists');
+      });
+  };
+
+  self.logout = function() {
+    ajaxService.call($http.get('/api/logout'))
+      .then(function(result) {
+        $log.log(result);
+        self.user = {};
+        $location.path('/');
+      });
+  };
+
+  self.signup = function(user) {
+    $log.log(user);
+    ajaxService.call($http.post('/api/register', user))
+      .then(function(result) {
+        self.user = result.user;
+        $log.log(result);
+        $location.path('/lists');
+      });
+  };
+
+  return self;
+
+  //TODO: make this a thing
+}]);
+
+app.config(['$routeProvider', function($routeProvider){
+  var routeDefinition = {
+    templateUrl: 'static/js/login/login.html',
+    controller: 'LoginCtrl',
+    controllerAs: 'vm',
+  };
+
+  $routeProvider.when('/', routeDefinition);
+
+}]).controller('LoginCtrl', ['$log', '$location', 'current', 'User', function($log, $location, current, User) {
+  var self = this;
+  self.newLogin = User();
+  self.newSignup = User();
+  self.current = current;
+
+  self.userView = 'login';
+
+  self.toggleView = function() {
+    if(self.userView === 'login') {
+      self.userView = 'signup';
+    } else {
+      self.userView = 'login';
+    }
+  };
+
+  self.login = function() {
+    $log.log(self.newLogin);
+    self.current.login(self.newLogin);
+    self.newLogin = User();
+  };
+
+  self.signup = function() {
+    self.current.signup(self.newSignup);
+    self.newSignup = User();
+  };
+}]);
+
+app.factory('User', function() {
+  return function (spec) {
+    spec = spec || {};
+    return {
+      name: spec.name,
+      email: spec.email,
+      password: spec.password,
+      assigned_to: []
     };
   };
 });
@@ -322,17 +319,6 @@ app.filter('statusFilter', function() {
   };
 });
 
-app.factory('usersService', ['ajaxService', '$http', function(ajaxService, $http) {
-
-  return {
-
-    userList: function() {
-      return ajaxService.call($http.get('api/users'));
-    }
-  };
-
-}]);
-
 app.factory('tasksService', ['ajaxService', '$http', function(ajaxService, $http) {
 
   return {
@@ -356,8 +342,15 @@ app.factory('tasksService', ['ajaxService', '$http', function(ajaxService, $http
       }
     },
     assignTask: function(task) {
-      var assignments = task.assigned_to;
-      assignments.push(task.newAssignment);
+      var index = task.assigned_to.indexOf(task.newAssignment);
+      if (index !== -1) {
+        task.assigned_to.splice(index, 1);
+        var assignments = task.assigned_to;
+        console.log(assignments);
+      } else {
+        var assignments = task.assigned_to;
+        assignments.push(task.newAssignment);
+      }
       var url = '/api/tasks/' + task.id;
       return ajaxService.call($http.put(url, { assigned_to: assignments }));
     },
@@ -366,6 +359,17 @@ app.factory('tasksService', ['ajaxService', '$http', function(ajaxService, $http
       var update = {};
       update[field] = task[field];
       return ajaxService.call($http.put(url, update));
+    }
+  };
+
+}]);
+
+app.factory('usersService', ['ajaxService', '$http', function(ajaxService, $http) {
+
+  return {
+
+    userList: function() {
+      return ajaxService.call($http.get('api/users'));
     }
   };
 
