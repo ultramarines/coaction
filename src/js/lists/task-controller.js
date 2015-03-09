@@ -73,6 +73,10 @@ app.config(['$routeProvider', function($routeProvider){
   };
 
   self.assignTask = function(task) {
+    if (task.assigned_to.indexOf(task.newAssignment) !== -1) { // no redundant assignments
+      return;
+    }
+
     tasksService.assignTask(task)
       .then(function(result) {
         console.log(result);

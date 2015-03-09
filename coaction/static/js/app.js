@@ -90,6 +90,10 @@ app.config(['$routeProvider', function($routeProvider){
   };
 
   self.assignTask = function(task) {
+    if (task.assigned_to.indexOf(task.newAssignment) !== -1) { // no redundant assignments
+      return;
+    }
+
     tasksService.assignTask(task)
       .then(function(result) {
         console.log(result);
@@ -325,22 +329,15 @@ app.factory('tasksService', ['ajaxService', '$http', function(ajaxService, $http
       }
     },
     assignTask: function(task) {
-<<<<<<< HEAD
-<<<<<<< HEAD
+      var assignments = task.assigned_to;
+      assignments.push(task.newAssignment);
       var url = '/api/tasks/' + task.id;
-      return ajaxService.call($http.put(url, { assigned_to: task.assigned_to }));
-=======
-=======
-      console.log(task);
->>>>>>> df13e64ffbfe07d134d72739b9fedf5399e1c288
-      var url = '/api/task_assignment';
-      return ajaxService.call($http.put(url, task));
+      return ajaxService.call($http.put(url, { assigned_to: assignments }));
     },
     updateTask: function(task, field) {
       var url = '/api/tasks/' + task.id;
       var update = {};
       return ajaxService.call($http.put(url, update));
->>>>>>> 645795b1deb5f6d831c57dadba425266aa76cc0f
     }
   };
 
