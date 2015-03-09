@@ -16,6 +16,17 @@ def index():
 ## Add your API views here
 
 
+@coaction.route("/api/assignments", methods=["GET"])
+@login_required
+def get_assignments():
+    assignments = Assignment.query.filter_by(user_id=current_user.id).all()
+    tasks = []
+    for assignment in assignments:
+        task = Task.query.filter_by(id=assignment.task_id).first()
+        tasks.append(task)
+    tasks = [task.to_dict() for task in tasks]
+    return jsonify({"tasks": tasks}), 201
+
 @coaction.route("/api/tasks", methods=["GET"])
 @login_required
 def get_tasks():
