@@ -21,23 +21,20 @@
         <button class="task-delete" ng-click="vm.deleteTask(task)">X</button>
 
         <div ng-show="task.detail">
-          <label><br>
-            <div>
-              <span>currently assigned to:</span>
-              <span ng-repeat="assignee in task.assigned_to">{{assignee}}</span>
-            </div>
-            <span>assign to:</span>
-            <select ng-change="vm.assignTask(task)" ng-model="task.newAssignment" >
-              <option ng-repeat="user in vm.users" value ="{{user.email}}">
-                {{user.name}}
-              </option>
-            </select>
-          </label><br>
+          <ul>currently assigned to:
+            <li ng-repeat="assignee in task.assigned_to">{{assignee}}</li>
+          </ul>
+          <span>assign to:</span>
+          <select ng-change="vm.assignTask(task)" ng-model="task.newAssignment" >
+            <option ng-repeat="user in vm.users" value ="{{user.email}}">
+              {{user.name}}
+            </option>
+          </select>
           <label for="date-due">Date Due:</label>
           <div ng-show="task.settingDate" name="date-due" ui-date="vm.dateOptions" type="text" placeholder="due date" ng-model="task.date_due"></div>
           <span>{{task.date_due.toDateString() || task.date_due}}</span>
-          <button ng-show="task.settingDate"ng-click="vm.updateDate(task)">set date</button>
-          <button ng-hide="task.settingDate"ng-click="vm.toggleSettingDate(task)">change date</button>
+          <button ng-show="task.settingDate" ng-click="vm.updateDate(task)">set date</button>
+          <button ng-hide="task.settingDate" ng-click="vm.toggleSettingDate(task)">change date</button>
         </div>
       </li>
       <li>

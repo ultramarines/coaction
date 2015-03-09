@@ -26,9 +26,6 @@ app.config(['$routeProvider', function($routeProvider){
 }]).controller('ListCtrl', ['tasksService', 'tasks', 'users', 'Task', '$log', function(tasksService, tasks, users, Task, $log) {
   var self = this;
   self.tasks = tasks;
-  // self.tasks.forEach(function(item) {
-  //   item.date_due = new Date(item.date_due);
-  // });
   self.users = users;
   self.newTask = Task();
   self.statusFilter = 'all';
