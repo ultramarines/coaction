@@ -40,9 +40,12 @@ app.config(['$routeProvider', function($routeProvider){
 
   $routeProvider.when('/lists', routeDefinition);
 
-}]).controller('ListCtrl', ['tasksService', 'tasks', 'users', 'Task', function(tasksService, tasks, users, Task) {
+}]).controller('ListCtrl', ['tasksService', 'tasks', 'users', 'Task', '$log', function(tasksService, tasks, users, Task, $log) {
   var self = this;
   self.tasks = tasks;
+  // self.tasks.forEach(function(item) {
+  //   item.date_due = new Date(item.date_due);
+  // });
   self.users = users;
   self.newTask = Task();
   self.statusFilter = 'all';
@@ -60,7 +63,7 @@ app.config(['$routeProvider', function($routeProvider){
         self.newTask = Task();
       })
       .catch(function (err) {
-        alert('addTask Failed :(');
+        $log.log('addTask Failed :(');
       });
   };
 
@@ -73,7 +76,7 @@ app.config(['$routeProvider', function($routeProvider){
         // alert(toggledTask.title + ' was ' + oldStatus + ', is now ' + toggledTask.status);
       })
       .catch(function(err) {
-        alert('status unchanged');
+        $log.log('status unchanged');
       });
   };
 
@@ -85,7 +88,7 @@ app.config(['$routeProvider', function($routeProvider){
         self.tasks.splice(index, 1);
       })
       .catch(function(err) {
-        alert('deletion failed');
+        $log.log('deletion failed');
       });
   };
 
@@ -96,10 +99,10 @@ app.config(['$routeProvider', function($routeProvider){
 
     tasksService.assignTask(task)
       .then(function(result) {
-        console.log(result);
+        $log.log(result);
       })
       .catch(function(err) {
-        console.log(err);
+        $log.log(err);
       });
   };
 
@@ -121,7 +124,7 @@ app.config(['$routeProvider', function($routeProvider){
 
   self.updateTask = function(task, field) {
     tasksService.updateTask(task, field).then(function(data){
-      console.log(data);
+      $log.log(data);
     });
   };
 
@@ -142,11 +145,10 @@ app.config(['$routeProvider', function($routeProvider){
   };
 
   self.updateDate = function(task) {
-    console.log(task);
     var myDate = new Date(task.date_due);
     task.date_due = myDate.toISOString().slice(0, 10);
     tasksService.updateTask(task, 'date_due').then(function(data){
-      console.log(data);
+      $log.log(data);
     });
   };
 
@@ -159,15 +161,18 @@ app.config(['$routeProvider', function($routeProvider){
 }]);
 
 app.factory('Task', function() {
+  var date = new Date();
   return function(spec) {
     spec = spec || {};
     return {
       title: spec.title || '',
       status: 'new',
+      date_due: date.toISOString().slice(0, 10)
     };
   };
 });
 
+<<<<<<< HEAD
 app.controller('MainNavCtrl',
   ['$log', 'current', '$location', function($log, current, $location) {
 
@@ -177,6 +182,8 @@ app.controller('MainNavCtrl',
 
   }]);
 
+=======
+>>>>>>> 88dcf4b9a9a181aa11406b60b70c91b8d33ba89f
 app.factory('current', ['ajaxService', '$location', '$http', '$log', function(ajaxService, $location, $http, $log) {
   var self = this;
   self.user = {};
@@ -272,6 +279,18 @@ app.factory('User', function() {
   };
 });
 
+<<<<<<< HEAD
+=======
+app.controller('MainNavCtrl',
+  ['$log', 'current', '$location', function($log, current, $location) {
+
+    var self = this;
+
+    self.current = current;
+
+  }]);
+
+>>>>>>> 88dcf4b9a9a181aa11406b60b70c91b8d33ba89f
 app.factory('ajaxService', ['$log', function($log) {
 
   return {
@@ -338,7 +357,6 @@ app.factory('tasksService', ['ajaxService', '$http', function(ajaxService, $http
       var url = '/api/tasks/' + task.id;
       var update = {};
       update[field] = task[field];
-      console.log(update);
       return ajaxService.call($http.put(url, update));
     }
   };

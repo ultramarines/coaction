@@ -23,9 +23,12 @@ app.config(['$routeProvider', function($routeProvider){
 
   $routeProvider.when('/lists', routeDefinition);
 
-}]).controller('ListCtrl', ['tasksService', 'tasks', 'users', 'Task', function(tasksService, tasks, users, Task) {
+}]).controller('ListCtrl', ['tasksService', 'tasks', 'users', 'Task', '$log', function(tasksService, tasks, users, Task, $log) {
   var self = this;
   self.tasks = tasks;
+  // self.tasks.forEach(function(item) {
+  //   item.date_due = new Date(item.date_due);
+  // });
   self.users = users;
   self.newTask = Task();
   self.statusFilter = 'all';
@@ -43,7 +46,7 @@ app.config(['$routeProvider', function($routeProvider){
         self.newTask = Task();
       })
       .catch(function (err) {
-        alert('addTask Failed :(');
+        $log.log('addTask Failed :(');
       });
   };
 
@@ -56,7 +59,7 @@ app.config(['$routeProvider', function($routeProvider){
         // alert(toggledTask.title + ' was ' + oldStatus + ', is now ' + toggledTask.status);
       })
       .catch(function(err) {
-        alert('status unchanged');
+        $log.log('status unchanged');
       });
   };
 
@@ -68,7 +71,7 @@ app.config(['$routeProvider', function($routeProvider){
         self.tasks.splice(index, 1);
       })
       .catch(function(err) {
-        alert('deletion failed');
+        $log.log('deletion failed');
       });
   };
 
@@ -79,10 +82,10 @@ app.config(['$routeProvider', function($routeProvider){
 
     tasksService.assignTask(task)
       .then(function(result) {
-        console.log(result);
+        $log.log(result);
       })
       .catch(function(err) {
-        console.log(err);
+        $log.log(err);
       });
   };
 
@@ -104,7 +107,7 @@ app.config(['$routeProvider', function($routeProvider){
 
   self.updateTask = function(task, field) {
     tasksService.updateTask(task, field).then(function(data){
-      console.log(data);
+      $log.log(data);
     });
   };
 
@@ -125,11 +128,10 @@ app.config(['$routeProvider', function($routeProvider){
   };
 
   self.updateDate = function(task) {
-    console.log(task);
     var myDate = new Date(task.date_due);
     task.date_due = myDate.toISOString().slice(0, 10);
     tasksService.updateTask(task, 'date_due').then(function(data){
-      console.log(data);
+      $log.log(data);
     });
   };
 
