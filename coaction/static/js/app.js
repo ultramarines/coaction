@@ -156,7 +156,7 @@ app.config(['$routeProvider', function($routeProvider){
     } else {
       task.settingDate = true;
     }
-  }
+  };
 
   self.dateOptions = {
     changeYear: true,
