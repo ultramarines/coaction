@@ -43,6 +43,9 @@ app.config(['$routeProvider', function($routeProvider){
 }]).controller('ListCtrl', ['tasksService', 'tasks', 'users', 'Task', function(tasksService, tasks, users, Task) {
   var self = this;
   self.tasks = tasks;
+  // self.tasks.forEach(function(item) {
+  //   item.date_due = new Date(item.date_due);
+  // });
   self.users = users;
   self.newTask = Task();
   self.statusFilter = 'all';
@@ -53,6 +56,7 @@ app.config(['$routeProvider', function($routeProvider){
       alert('you need to enter a task');
       return;
     }
+    console.log(self.newTask);
     tasksService.addTask(self.newTask)
       .then(function(result) {
         var addedTask = result.task;
@@ -159,11 +163,13 @@ app.config(['$routeProvider', function($routeProvider){
 }]);
 
 app.factory('Task', function() {
+  var date = new Date();
   return function(spec) {
     spec = spec || {};
     return {
       title: spec.title || '',
       status: 'new',
+      date_due: date.toISOString().slice(0, 10)
     };
   };
 });
@@ -329,16 +335,13 @@ app.factory('tasksService', ['ajaxService', '$http', function(ajaxService, $http
       }
     },
     assignTask: function(task) {
-      var assignments = task.assigned_to;
-      assignments.push(task.newAssignment);
-      var url = '/api/tasks/' + task.id;
-      return ajaxService.call($http.put(url, { assigned_to: assignments }));
+      var url = '/api/task_assignment';
+      return ajaxService.call($http.put(url, task));
     },
     updateTask: function(task, field) {
       var url = '/api/tasks/' + task.id;
       var update = {};
       update[field] = task[field];
-      console.log(update);
       return ajaxService.call($http.put(url, update));
     }
   };

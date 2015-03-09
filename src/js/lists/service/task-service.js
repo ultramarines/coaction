@@ -30,7 +30,6 @@ app.factory('tasksService', ['ajaxService', '$http', function(ajaxService, $http
       var url = '/api/tasks/' + task.id;
       var update = {};
       update[field] = task[field];
-      console.log(update);
       return ajaxService.call($http.put(url, update));
     }
   };

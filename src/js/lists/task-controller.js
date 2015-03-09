@@ -26,6 +26,9 @@ app.config(['$routeProvider', function($routeProvider){
 }]).controller('ListCtrl', ['tasksService', 'tasks', 'users', 'Task', function(tasksService, tasks, users, Task) {
   var self = this;
   self.tasks = tasks;
+  // self.tasks.forEach(function(item) {
+  //   item.date_due = new Date(item.date_due);
+  // });
   self.users = users;
   self.newTask = Task();
   self.statusFilter = 'all';
@@ -36,6 +39,7 @@ app.config(['$routeProvider', function($routeProvider){
       alert('you need to enter a task');
       return;
     }
+    console.log(self.newTask);
     tasksService.addTask(self.newTask)
       .then(function(result) {
         var addedTask = result.task;
