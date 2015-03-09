@@ -172,49 +172,6 @@ app.factory('Task', function() {
   };
 });
 
-app.controller('MainNavCtrl',
-  ['$log', 'current', '$location', function($log, current, $location) {
-
-    var self = this;
-
-    self.current = current;
-
-  }]);
-
-app.factory('ajaxService', ['$log', function($log) {
-
-  return {
-    call: function(p) {
-      return p.then(function (result) {
-        return result.data;
-      })
-      .catch(function (error) {
-        $log.log(error);
-      });
-    }
-  };
-
-}]);
-
-app.filter('statusFilter', function() {
-  return function(input, status) {
-
-    var filteredInput = [];
-
-    if (status === 'all') {
-      return input;
-    }
-
-    input.forEach(function(item) {
-      if (item.status === status) {
-        filteredInput.push(item);
-      }
-    });
-
-    return filteredInput;
-  };
-});
-
 app.factory('current', ['ajaxService', '$location', '$http', '$log', function(ajaxService, $location, $http, $log) {
   var self = this;
   self.user = {};
@@ -307,6 +264,49 @@ app.factory('User', function() {
       password: spec.password,
       assigned_to: []
     };
+  };
+});
+
+app.controller('MainNavCtrl',
+  ['$log', 'current', '$location', function($log, current, $location) {
+
+    var self = this;
+
+    self.current = current;
+
+  }]);
+
+app.factory('ajaxService', ['$log', function($log) {
+
+  return {
+    call: function(p) {
+      return p.then(function (result) {
+        return result.data;
+      })
+      .catch(function (error) {
+        $log.log(error);
+      });
+    }
+  };
+
+}]);
+
+app.filter('statusFilter', function() {
+  return function(input, status) {
+
+    var filteredInput = [];
+
+    if (status === 'all') {
+      return input;
+    }
+
+    input.forEach(function(item) {
+      if (item.status === status) {
+        filteredInput.push(item);
+      }
+    });
+
+    return filteredInput;
   };
 });
 
