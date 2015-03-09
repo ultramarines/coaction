@@ -1,21 +1,20 @@
 from flask import Blueprint, request, jsonify
 from flask.ext.login import login_user, logout_user, login_required, current_user
 
-from .models import Task, User, Comment
-from .forms import TaskForm, RegistrationForm, LoginForm, CommentForm
-from .extensions import db, login_manager
+from .models import Task, User, Comment, Assignment
+from .forms import TaskForm, RegistrationForm, LoginForm, CommentForm, AssignmentForm
+from .extensions import db
 import json
 from datetime import date, datetime
 
 coaction = Blueprint("coaction", __name__, static_folder="./static")
 
-
 @coaction.route("/")
 def index():
     return coaction.send_static_file("index.html")
 
-
 ## Add your API views here
+
 
 @coaction.route("/api/tasks", methods=["GET"])
 @login_required
@@ -60,7 +59,6 @@ def create_task():
             db.session.add(task)
             db.session.commit()
             task = task.to_dict()
-
             return (jsonify({ 'task': task }), 201)
 
         else:
@@ -72,15 +70,64 @@ def create_task():
 @login_required
 def delete_task(id):
     task = Task.query.filter_by(id = id).first()
-
     if task:
         db.session.delete(task)
         db.session.commit()
         return (jsonify({ 'task': task.to_dict() }), 201)
-
     else:
         return jsonify({"ERROR": "task not found"}), 406
 
+@coaction.route("/api/tasks/<int:id>", methods=['PUT'])
+@login_required
+def update_task(id):
+    input_check = False
+    body = request.get_data(as_text=True)
+    data = json.loads(body)
+    keys = data.keys()
+    task = Task.query.filter_by(id=id).first()
+    if len(keys) < 6:
+        if 'title' in keys:
+            task.title = data['title']
+            input_check = True
+        if 'description' in keys:
+            task.description = data['description']
+            input_check = True
+        if 'project_id' in keys:
+            task.project_id = data['project_id']
+            input_check = True
+        if 'status' in keys:
+            if data['status'] in ['new', 'started', 'done']:
+                task.status = data['status']
+                input_check = True
+            else:
+                return jsonify({"ERROR": "Invalid Data Input"}), 401
+        if 'assigned_to' in keys:
+            assignees = data['assigned_to']
+            old_assignments = Assignment.query.filter_by(task_id=task.id).all()
+            for old_assignment in old_assignments:
+                db.session.delete(old_assignment)
+            for assignee in assignees:
+                user = User.query.filter_by(email=assignee).first()
+                if user and not Assignment.query.filter_by(task_id=task.id, user_id=user.id).all():
+                    assignment = Assignment(task_id=task.id, user_id=user.id)
+                    db.session.add(assignment)
+            task.assigned_by = current_user.email
+            input_check = True
+        if 'date_assigned' in keys:
+            data_date = datetime.strptime(data['date_assigned'], "%Y-%m-%d")
+            task.date_assigned = data_date
+            input_check = True
+        if 'date_due' in keys:
+            data_date = datetime.strptime(data['date_due'], "%Y-%m-%d")
+            task.date_due = data_date
+            input_check = True
+        if input_check:
+            db.session.commit()
+            return jsonify({'task': task.to_dict()}), 201
+        else:
+            return jsonify({"ERROR": "Invalid Data Input"}), 401
+    else:
+        return jsonify({"ERROR": "Too Many Input Variables"}), 401
 
 @coaction.route("/api/tasks/<int:id>/comments", methods=["GET"])
 @login_required
@@ -114,59 +161,9 @@ def make_comment(id):
 @coaction.route("/api/task_assignment", methods=["GET"])
 @login_required
 def view_task_assignments():
-
     tasks = Task.query.filter_by(assigned_by = current_user.email)
     tasks = [task.to_dict() for task in tasks]
     return jsonify({"tasks": tasks}), 201
-
-
-
-@coaction.route("/api/tasks/<int:id>", methods=['PUT'])
-@login_required
-def update_task(id):
-    # user = require_authorization()
-    input_check = False
-    body = request.get_data(as_text=True)
-    data = json.loads(body)
-    keys = data.keys()
-    task = Task.query.filter_by(id=id).first()
-    if len(keys) < 6:
-        if 'title' in keys:
-            task.title = data['title']
-            input_check = True
-        if 'description' in keys:
-            task.description = data['description']
-            input_check = True
-        if 'project_id' in keys:
-            task.project_id = data['project_id']
-            input_check = True
-        if 'status' in keys:
-            if data['status'] in ['new', 'started', 'done']:
-                task.status = data['status']
-                input_check = True
-            else:
-                return jsonify({"ERROR": "Invalid Data Input"}), 401
-        if 'assigned_to' in keys:
-            assigned_to = User.query.filter_by(email = data["assigned_to"]).first()
-            task.user_id = assigned_to.id
-            task.assigned_to = assigned_to.email
-            task.assigned_by = current_user.email
-            input_check = True
-        if 'date_assigned' in keys:
-            data_date = datetime.strptime(data['date_assigned'], "%Y-%m-%d")
-            task.date_assigned = data_date
-            input_check = True
-        if 'date_due' in keys:
-            data_date = datetime.strptime(data['date_due'], "%Y-%m-%d")
-            task.date_due = data_date
-            input_check = True
-        if input_check:
-            db.session.commit()
-            return jsonify({'task': task.to_dict() }), 201
-        else:
-            return jsonify({"ERROR": "Invalid Data Input"}), 401
-    else:
-        return jsonify({"ERROR": "Too Many Input Variables"}), 401
 
 @coaction.route("/api/login", methods=['POST'])
 def login():

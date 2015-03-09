@@ -23,7 +23,6 @@ app.config(['$routeProvider', function($routeProvider){
     resolve: {
       tasks: ['tasksService', '$log', function(tasksService, $log) {
           return tasksService.taskList().then(function(result) {
-            console.log(result);
             return result.tasks;
           }).catch(function(err) {
             $log.log(err + ' -> tasks failed to load');
@@ -31,7 +30,6 @@ app.config(['$routeProvider', function($routeProvider){
       }],
       users: ['tasksService', '$log', function(tasksService, $log) {
           return tasksService.userList().then(function(result) {
-            $log.log(result.users);
             return result.users;
           }).catch(function(err) {
             $log.log(err + ' -> users failed to load');
@@ -117,8 +115,10 @@ app.config(['$routeProvider', function($routeProvider){
     }
   };
 
-  self.dueDate = function() {
-
+  self.updateTask = function(task, field) {
+    tasksService.updateTask(task, field).then(function(data){
+      console.log(data);
+    });
   };
 
   self.filterByNew = function() {
@@ -319,8 +319,22 @@ app.factory('tasksService', ['ajaxService', '$http', function(ajaxService, $http
       }
     },
     assignTask: function(task) {
+<<<<<<< HEAD
       var url = '/api/tasks/' + task.id;
       return ajaxService.call($http.put(url, { assigned_to: task.assigned_to }));
+=======
+      var url = '/api/task_assignment';
+      return ajaxService.call($http.post(url, task));
+    },
+    updateTask: function(task, field) {
+      var url = '/api/tasks/' + task.id;
+      var update = {};
+      update[field] = task[field];
+      console.log(task);
+      update = JSON.stringify(update);
+      console.log(update);
+      return ajaxService.call($http.put(url, update));
+>>>>>>> 645795b1deb5f6d831c57dadba425266aa76cc0f
     }
   };
 
