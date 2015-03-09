@@ -35,6 +35,13 @@ app.config(['$routeProvider', function($routeProvider){
             $log.log(err + ' -> users failed to load');
           });
       }],
+      assignments: ['tasksService', '$log', function(usersService, $log) {
+          return tasksService.assignmentList().then(function(result) {
+            return result.users;
+          }).catch(function(err) {
+            $log.log(err + ' -> assignments failed to load');
+          });
+      }],
     }
   };
 
@@ -43,6 +50,9 @@ app.config(['$routeProvider', function($routeProvider){
 }]).controller('ListCtrl', ['tasksService', 'tasks', 'users', 'Task', '$log', function(tasksService, tasks, users, Task, $log) {
   var self = this;
   self.tasks = tasks;
+  // self.tasks.forEach(function(item) {
+  //   item.date_due = new Date(item.date_due);
+  // });
   self.users = users;
   self.newTask = Task();
   self.statusFilter = 'all';
@@ -90,10 +100,8 @@ app.config(['$routeProvider', function($routeProvider){
   };
 
   self.assignTask = function(task) {
-    if (task.assigned_to.indexOf(task.newAssignment) !== -1) { // no redundant assignments
-      return;
-    }
-
+    // console.log(task);
+    // console.log('fire');
     tasksService.assignTask(task)
       .then(function(result) {
         $log.log(result);
@@ -177,6 +185,15 @@ app.factory('Task', function() {
     };
   };
 });
+
+app.controller('MainNavCtrl',
+  ['$log', 'current', '$location', function($log, current, $location) {
+
+    var self = this;
+
+    self.current = current;
+
+  }]);
 
 app.factory('current', ['ajaxService', '$location', '$http', '$log', function(ajaxService, $location, $http, $log) {
   var self = this;
@@ -273,15 +290,6 @@ app.factory('User', function() {
   };
 });
 
-app.controller('MainNavCtrl',
-  ['$log', 'current', '$location', function($log, current, $location) {
-
-    var self = this;
-
-    self.current = current;
-
-  }]);
-
 app.factory('ajaxService', ['$log', function($log) {
 
   return {
@@ -323,13 +331,20 @@ app.factory('tasksService', ['ajaxService', '$http', function(ajaxService, $http
     addTask: function(task) {
       return ajaxService.call($http.post('/api/tasks', task));
     },
+
     taskList: function() {
       return ajaxService.call($http.get('api/tasks'));
     },
+
+    assignmentList: function() {
+      return ajaxService.call($http.get('api/assignments'));
+    },
+
     deleteTask: function(task) {
       var url = '/api/tasks/' + task.id;
       return ajaxService.call($http.delete(url));
     },
+
     toggleTask: function(task) {
       var url = '/api/tasks/' + task.id;
       if (task.status === 'new' || task.status === 'started') {
@@ -338,12 +353,16 @@ app.factory('tasksService', ['ajaxService', '$http', function(ajaxService, $http
         return ajaxService.call($http.put(url, { status: 'started' }));
       }
     },
+
     assignTask: function(task) {
+      // console.log(task.assigned_to);
+      // console.log(task.newAssignment);
       var index = task.assigned_to.indexOf(task.newAssignment);
+      // console.log(index);
       if (index !== -1) {
         task.assigned_to.splice(index, 1);
         var assignments = task.assigned_to;
-        console.log(assignments);
+        // console.log(assignments);
       } else {
         var assignments = task.assigned_to;
         assignments.push(task.newAssignment);
@@ -351,12 +370,13 @@ app.factory('tasksService', ['ajaxService', '$http', function(ajaxService, $http
       var url = '/api/tasks/' + task.id;
       return ajaxService.call($http.put(url, { assigned_to: assignments }));
     },
+
     updateTask: function(task, field) {
       var url = '/api/tasks/' + task.id;
       var update = {};
       update[field] = task[field];
       return ajaxService.call($http.put(url, update));
-    }
+    },
   };
 
 }]);

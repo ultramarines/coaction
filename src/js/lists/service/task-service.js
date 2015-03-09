@@ -5,13 +5,20 @@ app.factory('tasksService', ['ajaxService', '$http', function(ajaxService, $http
     addTask: function(task) {
       return ajaxService.call($http.post('/api/tasks', task));
     },
+
     taskList: function() {
       return ajaxService.call($http.get('api/tasks'));
     },
+
+    assignmentList: function() {
+      return ajaxService.call($http.get('api/assignments'));
+    },
+
     deleteTask: function(task) {
       var url = '/api/tasks/' + task.id;
       return ajaxService.call($http.delete(url));
     },
+
     toggleTask: function(task) {
       var url = '/api/tasks/' + task.id;
       if (task.status === 'new' || task.status === 'started') {
@@ -20,12 +27,16 @@ app.factory('tasksService', ['ajaxService', '$http', function(ajaxService, $http
         return ajaxService.call($http.put(url, { status: 'started' }));
       }
     },
+
     assignTask: function(task) {
+      // console.log(task.assigned_to);
+      // console.log(task.newAssignment);
       var index = task.assigned_to.indexOf(task.newAssignment);
+      // console.log(index);
       if (index !== -1) {
         task.assigned_to.splice(index, 1);
         var assignments = task.assigned_to;
-        console.log(assignments);
+        // console.log(assignments);
       } else {
         var assignments = task.assigned_to;
         assignments.push(task.newAssignment);
@@ -33,12 +44,13 @@ app.factory('tasksService', ['ajaxService', '$http', function(ajaxService, $http
       var url = '/api/tasks/' + task.id;
       return ajaxService.call($http.put(url, { assigned_to: assignments }));
     },
+
     updateTask: function(task, field) {
       var url = '/api/tasks/' + task.id;
       var update = {};
       update[field] = task[field];
       return ajaxService.call($http.put(url, update));
-    }
+    },
   };
 
 }]);
