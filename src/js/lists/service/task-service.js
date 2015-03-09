@@ -8,9 +8,6 @@ app.factory('tasksService', ['ajaxService', '$http', function(ajaxService, $http
     taskList: function() {
       return ajaxService.call($http.get('api/tasks'));
     },
-    userList: function() {
-      return ajaxService.call($http.get('api/users'));
-    },
     deleteTask: function(task) {
       var url = '/api/tasks/' + task.id;
       return ajaxService.call($http.delete(url));
@@ -24,16 +21,15 @@ app.factory('tasksService', ['ajaxService', '$http', function(ajaxService, $http
       }
     },
     assignTask: function(task) {
-      var url = '/api/task_assignment';
-      return ajaxService.call($http.post(url, task));
+      var assignments = task.assigned_to;
+      assignments.push(task.newAssignment);
+      var url = '/api/tasks/' + task.id;
+      return ajaxService.call($http.put(url, { assigned_to: assignments }));
     },
     updateTask: function(task, field) {
       var url = '/api/tasks/' + task.id;
       var update = {};
       update[field] = task[field];
-      console.log(task);
-      update = JSON.stringify(update);
-      console.log(update);
       return ajaxService.call($http.put(url, update));
     }
   };

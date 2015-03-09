@@ -4,7 +4,8 @@ app.factory('User', function() {
     return {
       name: spec.name,
       email: spec.email,
-      password: spec.password
+      password: spec.password,
+      assigned_to: []
     };
   };
 });

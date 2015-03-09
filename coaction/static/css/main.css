@@ -1638,6 +1638,10 @@ h1.page-title {
     .task-list input:focus {
       outline: none; }
 
+.task-title {
+  display: inline-block;
+  width: 70%; }
+
 .task-complete {
   border-radius: 50%;
   padding: 1em;

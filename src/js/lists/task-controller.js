@@ -11,8 +11,8 @@ app.config(['$routeProvider', function($routeProvider){
             $log.log(err + ' -> tasks failed to load');
           });
       }],
-      users: ['tasksService', '$log', function(tasksService, $log) {
-          return tasksService.userList().then(function(result) {
+      users: ['usersService', '$log', function(usersService, $log) {
+          return usersService.userList().then(function(result) {
             return result.users;
           }).catch(function(err) {
             $log.log(err + ' -> users failed to load');
@@ -23,7 +23,7 @@ app.config(['$routeProvider', function($routeProvider){
 
   $routeProvider.when('/lists', routeDefinition);
 
-}]).controller('ListCtrl', ['tasksService', 'tasks', 'users', 'Task', function(tasksService, tasks, users, Task) {
+}]).controller('ListCtrl', ['tasksService', 'tasks', 'users', 'Task', '$log', function(tasksService, tasks, users, Task, $log) {
   var self = this;
   self.tasks = tasks;
   self.users = users;
@@ -43,7 +43,7 @@ app.config(['$routeProvider', function($routeProvider){
         self.newTask = Task();
       })
       .catch(function (err) {
-        alert('addTask Failed :(');
+        $log.log('addTask Failed :(');
       });
   };
 
@@ -56,7 +56,7 @@ app.config(['$routeProvider', function($routeProvider){
         // alert(toggledTask.title + ' was ' + oldStatus + ', is now ' + toggledTask.status);
       })
       .catch(function(err) {
-        alert('status unchanged');
+        $log.log('status unchanged');
       });
   };
 
@@ -68,17 +68,21 @@ app.config(['$routeProvider', function($routeProvider){
         self.tasks.splice(index, 1);
       })
       .catch(function(err) {
-        alert('deletion failed');
+        $log.log('deletion failed');
       });
   };
 
   self.assignTask = function(task) {
+    if (task.assigned_to.indexOf(task.newAssignment) !== -1) { // no redundant assignments
+      return;
+    }
+
     tasksService.assignTask(task)
       .then(function(result) {
-        console.log(result);
+        $log.log(result);
       })
       .catch(function(err) {
-        console.log(err);
+        $log.log(err);
       });
   };
 
@@ -100,7 +104,7 @@ app.config(['$routeProvider', function($routeProvider){
 
   self.updateTask = function(task, field) {
     tasksService.updateTask(task, field).then(function(data){
-      console.log(data);
+      $log.log(data);
     });
   };
 
@@ -120,6 +124,22 @@ app.config(['$routeProvider', function($routeProvider){
     self.statusFilter = 'all';
   };
 
+  self.updateDate = function(task) {
+    self.toggleSettingDate(task);
+    var myDate = new Date(task.date_due);
+    task.date_due = myDate.toISOString().slice(0, 10);
+    tasksService.updateTask(task, 'date_due').then(function(data){
+      $log.log(data);
+    });
+  };
+
+  self.toggleSettingDate = function(task) {
+    if (task.settingDate) {
+      task.settingDate = false;
+    } else {
+      task.settingDate = true;
+    }
+  }
 
   self.dateOptions = {
     changeYear: true,
