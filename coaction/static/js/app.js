@@ -156,21 +156,6 @@ app.factory('Task', function() {
   };
 });
 
-app.controller('MainNavCtrl',
-  ['$log', 'current', '$location', function($log, current, $location) {
-
-    var self = this;
-
-    self.current = current;
-
-    self.location = $location.url();
-
-    if( self.location === '/') {
-      self.hideLogo = true;
-    }
-
-  }]);
-
 app.factory('current', ['ajaxService', '$location', '$http', '$log', function(ajaxService, $location, $http, $log) {
   var self = this;
   self.user = {};
@@ -265,8 +250,6 @@ app.factory('User', function() {
   };
 });
 
-<<<<<<< HEAD
-=======
 app.controller('MainNavCtrl',
   ['$log', 'current', '$location', function($log, current, $location) {
 
@@ -276,7 +259,6 @@ app.controller('MainNavCtrl',
 
   }]);
 
->>>>>>> 18074aeefffa449ad07709405074ee1fc4c50c86
 app.factory('ajaxService', ['$log', function($log) {
 
   return {
