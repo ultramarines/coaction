@@ -15,10 +15,12 @@
       </li>
       <li ng-repeat="task in vm.tasks | statusFilter : vm.statusFilter">
         <input type="checkbox" class="task-complete ng-class: task.status;" ng-class="task.status" ng-click="vm.toggleTask(task)">
-        <span class="ng-class: task.status;" ng-click="vm.toggleDetail(task)">{{ task.title }}</span>
+        <div class="task-title" ng-click="vm.toggleDetail(task)">
+          <span class="ng-class: task.status;">{{ task.title }}</span>
+        </div>
         <button class="task-delete" ng-click="vm.deleteTask(task)">X</button>
 
-        <div>
+        <div ng-show="task.detail">
           <span>created: {{task.date_assigned}}</span>
           <br>
           <form>
@@ -29,10 +31,9 @@
                 </option>
               </select>
             </label><br>
-            <span>set due-date:</span>
-            <input ng-change="vm.updateTask(task, 'date_due')" type="text" placeholder="due date" ui-date="vm.dateOptions" ng-model="task.date_due"/>
-            <input ng-change="vm.updateTask(task, 'date_due')" type="text" ng-model="task.date_due"/>
-
+            <label>set due-date:
+              <input ng-change="vm.updateDate(task)" type="text" placeholder="due date" ui-date="vm.dateOptions" ng-model="task.date_due"/>
+            </label>
           </form>
         </div>
       </li>
