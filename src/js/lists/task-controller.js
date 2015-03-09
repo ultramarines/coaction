@@ -121,6 +121,9 @@ app.config(['$routeProvider', function($routeProvider){
   };
 
   self.updateDate = function(task) {
+    console.log(task);
+    var myDate = new Date(task.date_due);
+    task.date_due = myDate.toISOString().slice(0, 10);
     tasksService.updateTask(task, 'date_due').then(function(data){
       console.log(data);
     });

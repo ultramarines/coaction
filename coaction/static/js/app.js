@@ -138,6 +138,9 @@ app.config(['$routeProvider', function($routeProvider){
   };
 
   self.updateDate = function(task) {
+    console.log(task);
+    var myDate = new Date(task.date_due);
+    task.date_due = myDate.toISOString().slice(0, 10);
     tasksService.updateTask(task, 'date_due').then(function(data){
       console.log(data);
     });
@@ -309,9 +312,6 @@ app.factory('tasksService', ['ajaxService', '$http', function(ajaxService, $http
     taskList: function() {
       return ajaxService.call($http.get('api/tasks'));
     },
-    // userList: function() {
-    //   return ajaxService.call($http.get('api/users'));
-    // },
     deleteTask: function(task) {
       var url = '/api/tasks/' + task.id;
       return ajaxService.call($http.delete(url));
@@ -332,6 +332,8 @@ app.factory('tasksService', ['ajaxService', '$http', function(ajaxService, $http
     updateTask: function(task, field) {
       var url = '/api/tasks/' + task.id;
       var update = {};
+      update[field] = task[field];
+      console.log(update);
       return ajaxService.call($http.put(url, update));
     }
   };
