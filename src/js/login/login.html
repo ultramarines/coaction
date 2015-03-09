@@ -6,7 +6,7 @@
     <div ng-show="vm.userView === 'login'" class="login-form home-page-form">
       <form ng-submit="vm.login()">
         <label>email<br>
-          <input class="login-input" type="text" ng-model="vm.newLogin.email" placeholder="email">
+          <input class="login-input" type="email" ng-model="vm.newLogin.email" placeholder="email">
         </label>
         <label>password<br>
           <input class="login-input" type="password" ng-model="vm.newLogin.password" placeholder="password">
@@ -21,7 +21,7 @@
           <input class="login-input" type="text" ng-model="vm.newSignup.name" placeholder="name">
         </label>
         <label>email<br>
-          <input class="login-input" type="text" ng-model="vm.newSignup.email" placeholder="email">
+          <input class="login-input" type="email" ng-model="vm.newSignup.email" placeholder="email">
         </label>
         <label>password<br>
           <input class="login-input" type="password" ng-model="vm.newSignup.password" placeholder="password">

@@ -28,8 +28,8 @@ app.config(['$routeProvider', function($routeProvider){
             $log.log(err + ' -> tasks failed to load');
           });
       }],
-      users: ['tasksService', '$log', function(tasksService, $log) {
-          return tasksService.userList().then(function(result) {
+      users: ['usersService', '$log', function(usersService, $log) {
+          return usersService.userList().then(function(result) {
             return result.users;
           }).catch(function(err) {
             $log.log(err + ' -> users failed to load');
@@ -139,7 +139,7 @@ app.config(['$routeProvider', function($routeProvider){
 
   self.updateDate = function(task) {
     tasksService.updateTask(task, 'date_due').then(function(data){
-      // console.log(data);
+      console.log(data);
     });
   };
 
@@ -250,7 +250,8 @@ app.factory('User', function() {
     return {
       name: spec.name,
       email: spec.email,
-      password: spec.password
+      password: spec.password,
+      assigned_to: []
     };
   };
 });
@@ -308,9 +309,9 @@ app.factory('tasksService', ['ajaxService', '$http', function(ajaxService, $http
     taskList: function() {
       return ajaxService.call($http.get('api/tasks'));
     },
-    userList: function() {
-      return ajaxService.call($http.get('api/users'));
-    },
+    // userList: function() {
+    //   return ajaxService.call($http.get('api/users'));
+    // },
     deleteTask: function(task) {
       var url = '/api/tasks/' + task.id;
       return ajaxService.call($http.delete(url));
@@ -324,13 +325,25 @@ app.factory('tasksService', ['ajaxService', '$http', function(ajaxService, $http
       }
     },
     assignTask: function(task) {
+      console.log(task);
       var url = '/api/task_assignment';
-      return ajaxService.call($http.post(url, task));
+      return ajaxService.call($http.put(url, task));
     },
     updateTask: function(task, field) {
       var url = '/api/tasks/' + task.id;
       var update = {};
       return ajaxService.call($http.put(url, update));
+    }
+  };
+
+}]);
+
+app.factory('usersService', ['ajaxService', '$http', function(ajaxService, $http) {
+
+  return {
+
+    userList: function() {
+      return ajaxService.call($http.get('api/users'));
     }
   };
 

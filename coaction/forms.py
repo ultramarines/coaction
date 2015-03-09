@@ -23,5 +23,11 @@ class LoginForm(Form):
     email = EmailField(validators=[DataRequired(), Email()])
     password = PasswordField(validators=[DataRequired()])
 
+
+class AssignmentForm(Form):
+    user_id = IntegerField(validators=[DataRequired()])
+    task_id = IntegerField(validators=[DataRequired()])
+
+
 class CommentForm(Form):
     comment = StringField(validators=[DataRequired()])

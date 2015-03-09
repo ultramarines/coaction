@@ -11,8 +11,8 @@ app.config(['$routeProvider', function($routeProvider){
             $log.log(err + ' -> tasks failed to load');
           });
       }],
-      users: ['tasksService', '$log', function(tasksService, $log) {
-          return tasksService.userList().then(function(result) {
+      users: ['usersService', '$log', function(usersService, $log) {
+          return usersService.userList().then(function(result) {
             return result.users;
           }).catch(function(err) {
             $log.log(err + ' -> users failed to load');
@@ -122,7 +122,7 @@ app.config(['$routeProvider', function($routeProvider){
 
   self.updateDate = function(task) {
     tasksService.updateTask(task, 'date_due').then(function(data){
-      // console.log(data);
+      console.log(data);
     });
   };
 

@@ -16,6 +16,8 @@ class Task(db.Model):
     assigned_to = db.Column(db.String)
 
     def to_dict(self):
+        assignees = Assignment.query.filter_by(task_id=self.id).all()
+        assignees = [User.query.filter_by(id=assignee.user_id).first().email for assignee in assignees]
         return {"id": self.id,
                 "title": self.title,
                 "description": self.description,
@@ -25,7 +27,7 @@ class Task(db.Model):
                 "date_assigned": str(self.date_assigned),
                 "date_due": str(self.date_due),
                 "assigned_by": self.assigned_by,
-                "assigned_to":self.assigned_to}
+                "assigned_to":assignees}
 
 
 class User(db.Model, UserMixin):
@@ -57,8 +59,12 @@ class User(db.Model, UserMixin):
 
     @login_manager.user_loader
     def load_user(id):
-        print("Check if load user happens")
         return User.query.get(id)
+
+class Assignment(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer)
+    task_id = db.Column(db.Integer)
 
 
 class Comment(db.Model):
