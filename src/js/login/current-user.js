@@ -5,7 +5,7 @@ app.factory('current', ['ajaxService', '$location', '$http', '$log', function(aj
   ajaxService.call($http.get('/api/me'))
     .then(function(result) {
       self.user = result.user;
-      console.log(self.user.id);
+      console.log(self.user.email);
       $location.path('/lists');
     }).catch(function(err){
       $location.path('/');
@@ -41,5 +41,4 @@ app.factory('current', ['ajaxService', '$location', '$http', '$log', function(aj
 
   return self;
 
-  //TODO: make this a thing
 }]);

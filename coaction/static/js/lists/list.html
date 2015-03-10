@@ -16,7 +16,7 @@
       <li ng-repeat="task in vm.tasks | statusFilter : vm.statusFilter">
         <input type="checkbox" class="task-complete ng-class: task.status;" ng-class="task.status" ng-click="vm.toggleTask(task)">
         <div class="task-title" ng-click="vm.toggleDetail(task)">
-          <span class="ng-class: task.status;">{{ task.title }}</span>
+          <span class="ng-class: task.status;">{{ task.title }}<span ng-if="task.isAssignment">!!</span></span>
         </div>
         <button class="task-delete" ng-click="vm.deleteTask(task)">X</button>
 
@@ -42,6 +42,7 @@
         <button class="list-view-filter" ng-click="vm.filterByNew()">new</button>
         <button class="list-view-filter" ng-click="vm.filterByStarted()">begun</button>
         <button class="list-view-filter" ng-click="vm.filterByDone()">done</button>
+        <button class="list-view-filter" ng-click="vm.filterByAssignments()">done</button>
       </li>
     </ul>
 

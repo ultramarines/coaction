@@ -18,9 +18,10 @@ app.config(['$routeProvider', function($routeProvider){
             $log.log(err + ' -> users failed to load');
           });
       }],
-      assignments: ['tasksService', '$log', function(usersService, $log) {
+      assignments: ['tasksService', '$log', function(tasksService, $log) {
           return tasksService.assignmentList().then(function(result) {
-            return result.users;
+            console.log(result.tasks);
+            return result.tasks;
           }).catch(function(err) {
             $log.log(err + ' -> assignments failed to load');
           });
@@ -30,12 +31,24 @@ app.config(['$routeProvider', function($routeProvider){
 
   $routeProvider.when('/lists', routeDefinition);
 
-}]).controller('ListCtrl', ['tasksService', 'tasks', 'users', 'Task', '$log', function(tasksService, tasks, users, Task, $log) {
+}]).controller('ListCtrl', ['tasksService', 'tasks', 'users', 'assignments', 'Task', '$log', function(tasksService, tasks, users, assignments, Task, $log) {
   var self = this;
   self.tasks = tasks;
-  // self.tasks.forEach(function(item) {
-  //   item.date_due = new Date(item.date_due);
-  // });
+  
+  assignments.forEach(function (assignment) {
+    var found = false;
+    self.tasks.forEach(function (task) {
+      if (assignment.id === task.id) {
+        task.isAssignment = true;
+        found = true;
+      }
+    })
+    if (!found) {
+      assignment.isAssignment = true;
+      self.tasks.push(assignment);
+    }
+  });
+
   self.users = users;
   self.newTask = Task();
   self.statusFilter = 'all';
@@ -83,8 +96,7 @@ app.config(['$routeProvider', function($routeProvider){
   };
 
   self.assignTask = function(task) {
-    // console.log(task);
-    // console.log('fire');
+
     tasksService.assignTask(task)
       .then(function(result) {
         $log.log(result);

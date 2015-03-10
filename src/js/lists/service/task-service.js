@@ -11,7 +11,7 @@ app.factory('tasksService', ['ajaxService', '$http', function(ajaxService, $http
     },
 
     assignmentList: function() {
-      return ajaxService.call($http.get('api/assignments'));
+      return ajaxService.call($http.get('/api/assignments'));
     },
 
     deleteTask: function(task) {
@@ -29,14 +29,10 @@ app.factory('tasksService', ['ajaxService', '$http', function(ajaxService, $http
     },
 
     assignTask: function(task) {
-      // console.log(task.assigned_to);
-      // console.log(task.newAssignment);
       var index = task.assigned_to.indexOf(task.newAssignment);
-      // console.log(index);
       if (index !== -1) {
         task.assigned_to.splice(index, 1);
         var assignments = task.assigned_to;
-        // console.log(assignments);
       } else {
         var assignments = task.assigned_to;
         assignments.push(task.newAssignment);
