@@ -19,13 +19,15 @@ def index():
 @coaction.route("/api/assignments", methods=["GET"])
 @login_required
 def get_assignments():
-    assignments = Assignment.query.filter_by(user_id=current_user.id).all()
-    tasks = []
-    for assignment in assignments:
-        task = Task.query.filter_by(id=assignment.task_id).first()
-        tasks.append(task)
-    tasks = [task.to_dict() for task in tasks]
-    return jsonify({"tasks": tasks}), 201
+   assignments = Assignment.query.filter_by(user_id=current_user.id).all()
+   tasks = []
+   for assignment in assignments:
+       task = Task.query.filter_by(id=assignment.task_id).first()
+       if task:
+           tasks.append(task)
+   if len(tasks) > 0:
+       tasks = [task.to_dict() for task in tasks]
+   return jsonify({"tasks": tasks}), 201
 
 @coaction.route("/api/tasks", methods=["GET"])
 @login_required
@@ -94,6 +96,7 @@ def update_task(id):
     input_check = False
     body = request.get_data(as_text=True)
     data = json.loads(body)
+    print("\n\n\nData:  ",data)
     keys = data.keys()
     task = Task.query.filter_by(id=id).first()
     if len(keys) < 6:
@@ -173,8 +176,12 @@ def make_comment(id):
 @login_required
 def view_task_assignments():
     tasks = Task.query.filter_by(assigned_by = current_user.email)
-    tasks = [task.to_dict() for task in tasks]
-    return jsonify({"tasks": tasks}), 201
+    if tasks:
+        tasks = [task.to_dict() for task in tasks]
+    else:
+        tasks = []
+        return jsonify({"tasks": tasks}), 201
+
 
 @coaction.route("/api/login", methods=['POST'])
 def login():
