@@ -18,14 +18,37 @@ app.config(['$routeProvider', function($routeProvider){
             $log.log(err + ' -> users failed to load');
           });
       }],
+      assignments: ['tasksService', '$log', function(tasksService, $log) {
+          return tasksService.assignmentList().then(function(result) {
+            console.log(result.tasks);
+            return result.tasks;
+          }).catch(function(err) {
+            $log.log(err + ' -> assignments failed to load');
+          });
+      }],
     }
   };
 
   $routeProvider.when('/lists', routeDefinition);
 
-}]).controller('ListCtrl', ['tasksService', 'tasks', 'users', 'Task', '$log', function(tasksService, tasks, users, Task, $log) {
+}]).controller('ListCtrl', ['tasksService', 'tasks', 'users', 'assignments', 'Task', '$log', function(tasksService, tasks, users, assignments, Task, $log) {
   var self = this;
   self.tasks = tasks;
+  
+  assignments.forEach(function (assignment) {
+    var found = false;
+    self.tasks.forEach(function (task) {
+      if (assignment.id === task.id) {
+        task.isAssignment = true;
+        found = true;
+      }
+    })
+    if (!found) {
+      assignment.isAssignment = true;
+      self.tasks.push(assignment);
+    }
+  });
+
   self.users = users;
   self.newTask = Task();
   self.statusFilter = 'all';
@@ -73,9 +96,6 @@ app.config(['$routeProvider', function($routeProvider){
   };
 
   self.assignTask = function(task) {
-    if (task.assigned_to.indexOf(task.newAssignment) !== -1) { // no redundant assignments
-      return;
-    }
 
     tasksService.assignTask(task)
       .then(function(result) {
