@@ -1618,9 +1618,21 @@ h1.page-title {
   font-weight: 100;
   font-size: 1.2em; }
 
+.padding {
+  padding: .5em; }
+
 .lists-content {
   color: #EEEFF7;
   text-align: center; }
+
+.task-list li, .assigned-list li {
+  padding: 1em; }
+
+.task-list li {
+  border-bottom: 1px solid #ccc; }
+
+.assigned-list li {
+  border-bottom: none; }
 
 .task-list {
   background-color: #EEEFF7;
@@ -1628,7 +1640,9 @@ h1.page-title {
   text-align: left;
   display: inline-block;
   max-width: 33%;
-  margin: 0 auto; }
+  margin: 0 auto;
+  padding: 1em;
+  border-radius: .5em; }
   .task-list li {
     padding: .2em;
     vertical-align: middle; }
@@ -1638,9 +1652,16 @@ h1.page-title {
     .task-list input:focus {
       outline: none; }
 
+.task-title-input {
+  width: 60%;
+  padding: .5em; }
+
 .task-title {
   display: inline-block;
-  width: 70%; }
+  width: 50%; }
+
+.btn-right {
+  float: right; }
 
 .task-complete {
   border-radius: 50%;
@@ -1649,6 +1670,14 @@ h1.page-title {
   overflow: auto;
   background-color: #fff;
   border: 2px solid #92CDCF; }
+
+.task-assign {
+  padding: .5em;
+  border: 1px solid #92CDCF;
+  border-radius: 0;
+  background-color: #fff;
+  color: #fff;
+  -webkit-appearance: none; }
 
 .task-delete {
   float: right;
@@ -1664,6 +1693,44 @@ h1.page-title {
   padding: .2em; }
   .list-view-filter:hover {
     background-color: #ddd; }
+
+.task-date-due {
+  position: relative;
+  padding: 1em; }
+  .task-date-due:after {
+    content: "";
+    display: block;
+    padding-top: 100%; }
+
+.set-date-btn {
+  background-color: #31353D; }
+
+.date-picker {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: none;
+  border-radius: 0;
+  background-color: white; }
+
+select.ui-datepicker-month, select.ui-datepicker-year {
+  -webkit-appearance: none;
+  padding: .2em .5em;
+  border-radius: 0;
+  background-color: #92CDCF;
+  color: #EEEFF7; }
+
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default, .ui-widget-header {
+  background: none;
+  border: none; }
+
+.ui-datepicker, .ui-widget-header, .ui-widget-content .ui-state-default {
+  border: none;
+  background: none; }
+
+.ui-widget-content .ui-state-default {
+  background-color: #92CDCF;
+  color: #EEEFF7; }
 
 .main-nav-logo {
   height: 3.5em;

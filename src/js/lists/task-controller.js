@@ -20,7 +20,6 @@ app.config(['$routeProvider', function($routeProvider){
       }],
       assignments: ['tasksService', '$log', function(tasksService, $log) {
           return tasksService.assignmentList().then(function(result) {
-            console.log(result.tasks);
             return result.tasks;
           }).catch(function(err) {
             $log.log(err + ' -> assignments failed to load');
@@ -34,7 +33,7 @@ app.config(['$routeProvider', function($routeProvider){
 }]).controller('ListCtrl', ['tasksService', 'tasks', 'users', 'assignments', 'Task', '$log', function(tasksService, tasks, users, assignments, Task, $log) {
   var self = this;
   self.tasks = tasks;
-  
+
   assignments.forEach(function (assignment) {
     var found = false;
     self.tasks.forEach(function (task) {
@@ -42,7 +41,7 @@ app.config(['$routeProvider', function($routeProvider){
         task.isAssignment = true;
         found = true;
       }
-    })
+    });
     if (!found) {
       assignment.isAssignment = true;
       self.tasks.push(assignment);
@@ -96,13 +95,24 @@ app.config(['$routeProvider', function($routeProvider){
   };
 
   self.assignTask = function(task) {
+    var index = task.assigned_to.indexOf(task.newAssignment);
+    if(index === -1 && task.newAssignment !== '') {
+      task.assigned_to.push(task.newAssignment);
+      $log.log(task);
+      tasksService.setAssigned(task)
+        .then(function(result){
+          $log.log(result);
+        });
+      task.newAssignement = undefined;
+    }
+  };
 
-    tasksService.assignTask(task)
-      .then(function(result) {
+  self.removeAssigned = function(task, assign) {
+    var index = task.assigned_to.indexOf(assign);
+    task.assigned_to.splice(index, 1);
+    tasksService.setAssigned(task)
+      .then(function(result){
         $log.log(result);
-      })
-      .catch(function(err) {
-        $log.log(err);
       });
   };
 
@@ -162,8 +172,6 @@ app.config(['$routeProvider', function($routeProvider){
   };
 
   self.dateOptions = {
-    changeYear: true,
-    changeMonth: true,
     dateFormat: "yy-mm-dd"
   };
 
